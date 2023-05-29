@@ -1,8 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import logo from './logo.png';
-import motoImg from './moto.png';
-import repuestoImg from './repuestos.png';
+import logo from './imagenes/logo.png';
+import motoImg from './imagenes/moto.png';
+import repuestoImg from './imagenes/repuestos.png';
 import './Form.css';
 
 const Admin = () => {
@@ -25,7 +25,7 @@ const Admin = () => {
         </div>
         <div className="linea-horizontal" /> 
         <div>
-          <Link to="/dashboard/repuestos">
+          <Link to="/admin/repuestos">
             <span className="repuesto-texto">Repuestos</span>
             <img src={repuestoImg} alt="Repuestos" className="repuesto-img" />
           </Link>

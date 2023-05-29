@@ -11,6 +11,7 @@ function App() {
       
       {/*Paginas privadas*/}
       <Route path="/admin" element={<Admin />} />
+
       
 
       {/*Otras*/}

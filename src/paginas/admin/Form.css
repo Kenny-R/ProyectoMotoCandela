@@ -1,3 +1,6 @@
+body {
+  background-color: #FFFFFF;
+}
 .sidebar {
   position: fixed;
   width: 20%;
