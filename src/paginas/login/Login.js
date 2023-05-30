@@ -16,19 +16,22 @@ const Login = () => {
   };
 
   const BotonIniciarSesion = styled(Button)(() => ({
-    color: "#000000",
+    color: "#fff",
     backgroundColor: "#F17D3B",
+    width: "12rem",
+    boxShadow: "0 10px 20px rgba(0, 0, 0, .1), 0 3px 6px rgba(0, 0, 0, .05)",
     "&:hover": {
       backgroundColor: "#D36D34",
+      boxShadow: "rgba(0, 1, 0, .2) 0 2px 8px",
     },
   }));
   return (
     <Box className="custom-box">
-      <Box className="ladoIzquierdo"/>
+      <Box className="ladoIzquierdo" />
 
       <Box className="ladoDerecho">
         <Typography sx={{ textAlign: "center", m: 3 }} variant="h4">
-          Iniciar Sesion
+          Iniciar Sesión
         </Typography>
         <TextField
           value={usuario}
@@ -56,20 +59,18 @@ const Login = () => {
           sx={{ marginBottom: 2 }}
         />
 
-        <Box>
-          <BotonIniciarSesion
-            onClick={handleSubmit}
-            variant="contained"
-            fullWidth
-            sx={{
-              margin: 2,
-              paddingX: 3,
-              paddingY: 1.5,
-            }}
-          >
-            Iniciar Sesion
-          </BotonIniciarSesion>
-        </Box>
+        <BotonIniciarSesion
+          onClick={handleSubmit}
+          variant="contained"
+          fullWidth
+          sx={{
+            margin: 2,
+            paddingX: 3,
+            paddingY: 1.5,
+          }}
+        >
+          Iniciar Sesión
+        </BotonIniciarSesion>
       </Box>
     </Box>
   );
