@@ -1,3 +1,10 @@
+.loginBody {
+  background: #434C50;
+  background: linear-gradient(135deg, #434C50, #080E18);
+  width: 100vw;
+  height: 100vh;
+  background-color: #ffffff;
+}
 .custom-box {
     display: flex;
     position: absolute;
