@@ -1,5 +1,7 @@
 body {
-  background-color: #FFFFFF;
+  background: #434C50;
+  background: linear-gradient(135deg, #434C50, #080E18);
+  height: 100vh;
 }
 .sidebar {
   position: fixed;
@@ -85,5 +87,6 @@ body {
   letter-spacing: 0.05em;
   
   color: #FFFFFF;
+  margin: 0;
   
 }
