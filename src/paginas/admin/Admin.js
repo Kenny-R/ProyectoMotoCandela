@@ -1,12 +1,11 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import logo from './imagenes/logo.png';
-import motoImg from './imagenes/moto.png';
-import repuestoImg from './imagenes/repuestos.png';
-import './Form.css';
+import React from "react";
+import { Link } from "react-router-dom";
+import logo from "./imagenes/logo.png";
+import motoImg from "./imagenes/moto.png";
+import repuestoImg from "./imagenes/repuestos.png";
+import "./Form.css";
 
 const Admin = () => {
-
   const logout = () => {
     // Realiza lo necesario para el cierre de sesión
   };
@@ -23,7 +22,7 @@ const Admin = () => {
             <img src={motoImg} alt="Moto" className="moto-img" />
           </Link>
         </div>
-        <div className="linea-horizontal" /> 
+        <div className="linea-horizontal" />
         <div>
           <Link to="/admin/repuestos">
             <span className="repuesto-texto">Repuestos</span>
@@ -36,12 +35,10 @@ const Admin = () => {
           </button>
         </div>
       </div>
-      
-      <div className="contenido">
-        {/* Contenido del admin */}
-      </div>
+
+      <div className="contenido">{/* Contenido del admin */}</div>
     </div>
   );
 };
 
-export default Admin
+export default Admin;
