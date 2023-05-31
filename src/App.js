@@ -1,8 +1,8 @@
 import React from 'react';
 import { Routes, Route } from "react-router-dom";
-import Login from "./paginas/login/Login";
+import IniciarSesion from "./paginas/iniciarSesion/IniciarSesion";
 import NoEncontrado from "./paginas/comunes/NoEncontrado";
-import Sidebar from "./componentes/sidebar/Sidebar"
+import BarraLateral from "./componentes/barraLateral/BarraLateral"
 import Motos from "./paginas/motos/Motos"
 import Repuestos from "./paginas/repuestos/Repuestos"
 import "./App.css"
@@ -10,16 +10,16 @@ function App() {
   return (
     <Routes>
       {/*Paginas Publicas*/}
-      <Route path="/login" element={<Login />} />
+      <Route path="/iniciarSesion" element={<IniciarSesion />} />
       
       {/*Paginas privadas*/}
-      <Route path="/" element={<Sidebar><Motos/></Sidebar>} />
-      <Route path="/repuestos" element={<Sidebar><Repuestos/></Sidebar>} />
+      <Route path="/" element={<BarraLateral><Motos/></BarraLateral>} />
+      <Route path="/repuestos" element={<BarraLateral><Repuestos/></BarraLateral>} />
 
       
 
       {/*Otras*/}
-      <Route path="*" element={<Sidebar><NoEncontrado /></Sidebar>} />
+      <Route path="*" element={<BarraLateral><NoEncontrado /></BarraLateral>} />
     </Routes>
   );
 }

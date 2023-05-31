@@ -1,0 +1,53 @@
+* {
+  margin: 0;
+  padding: 0;
+  text-decoration: none;
+}
+.container {
+  display: flex;
+}
+.contenido {
+  width: 100%;
+  padding: 20px;
+}
+.barraLateral {
+  background: #393939;
+  color: #fff;
+  height: 100vh;
+  width: 20%;
+  transition: all 0.5s;
+}
+.contenedorLogo {
+  display: flex;
+  align-items: center;
+  padding: 20px 15px;
+}
+.logo {
+  width: 100%;
+}
+
+.enlace {
+  display: flex;
+  color: #fff;
+  padding: 10px 15px;
+  gap: 15px;
+  transition: all 0.5s;
+}
+.enlace:hover {
+  background: #f17d3b;
+  color: #000;
+  transition: all 0.5s;
+}
+
+.active { /* NO cambiar este nombre de clase*/
+  background: #f17d3b;
+  color: #000;
+}
+.textoEnlace {
+  font-size: 20px;
+}
+
+.icono {
+  font-size: 3em;
+  color: #000;
+}

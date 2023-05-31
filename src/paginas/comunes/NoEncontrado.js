@@ -1,9 +1,12 @@
-import React from 'react'
+import React from "react";
 
 const NoEncontrado = () => {
   return (
-    <h1>Que paso master tas perdio???</h1>
-  )
-}
+    <>
+      <h1>Error 404</h1>
+      <p>Pagina no encontrada</p>
+    </>
+  );
+};
 
-export default NoEncontrado
+export default NoEncontrado;

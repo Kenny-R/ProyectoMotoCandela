@@ -1,9 +1,9 @@
 import { React, useState } from "react";
 import { styled } from "@mui/material/styles";
 import { Button, Box, TextField, Typography } from "@mui/material/";
-import "./style.css";
+import "./estilosIniciarSesion.css";
 
-const Login = () => {
+const IniciarSesion = () => {
   const [usuario, setUsuario] = useState("");
   const [contraseha, setContraseha] = useState("");
 
@@ -26,7 +26,7 @@ const Login = () => {
     },
   }));
   return (
-    <div className="loginBody">
+    <div className="iniciarSesionBody">
       <Box className="custom-box">
         <Box className="ladoIzquierdo" />
 
@@ -78,4 +78,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default IniciarSesion;
