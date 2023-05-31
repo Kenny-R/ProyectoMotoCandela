@@ -1,7 +1,7 @@
 import { styled, TableCell } from '@mui/material';
 import { tableCellClasses } from '@mui/material/TableCell';
 
-const StyledTableCell = styled(TableCell)(({ theme }) => ({
+const CeldaTablaConEstilo = styled(TableCell)(({ theme }) => ({
     [`&.${tableCellClasses.head}`]: {
       backgroundColor: theme.palette.common.black,
       color: theme.palette.common.white,
@@ -11,4 +11,4 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
     },
 }));
 
-export default StyledTableCell
+export default CeldaTablaConEstilo

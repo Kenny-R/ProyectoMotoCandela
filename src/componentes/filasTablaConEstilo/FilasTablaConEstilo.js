@@ -1,6 +1,6 @@
 import { styled, TableRow } from '@mui/material';
 
-const StyledTableRow = styled(TableRow)(({ theme }) => ({
+const FilasTablaConEstilo = styled(TableRow)(({ theme }) => ({
     '&:nth-of-type(odd)': {
       backgroundColor: theme.palette.action.hover,
     },
@@ -10,4 +10,4 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
     },
 }));
 
-export default StyledTableRow
+export default FilasTablaConEstilo
