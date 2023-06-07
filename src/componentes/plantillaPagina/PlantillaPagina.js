@@ -18,7 +18,7 @@ const PlantillaPagina = (props) => {
         <Grid item md={12}>
           <Item>
             <Grid container>
-              <Grid item md={9}>
+              <Grid item md={8}>
                 <Typography
                   variant="h6"
                   align="left"
@@ -27,18 +27,18 @@ const PlantillaPagina = (props) => {
                   {props.nameList}
                 </Typography>
               </Grid>
-              <Grid item md={1}>
+              <Grid item md={2}>
                 <Button
                   variant="contained"
                   color="primary"
                   startIcon={<MdAdd sx={{ color: "#FFF", fontSize: "1rem" }} />}
                 >
-                  Add
+                  Agregar
                 </Button>
               </Grid>
               <Grid item md={2}>
                 <Button variant="contained" color="primary">
-                  Massive Load
+                  Carga Masiva
                 </Button>
               </Grid>
               <Grid item md={12}>
