@@ -9,7 +9,8 @@ const PlantillaPagina = (props) => {
     <Box
       sx={{
         minWidth: "700px",
-        minHeight: "500px",
+        height: "100%",
+        minHeight: "100vh",
         backgroundColor: "#f1f1f1",
         p: 4,
       }}

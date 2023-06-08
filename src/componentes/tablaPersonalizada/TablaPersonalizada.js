@@ -14,15 +14,15 @@ import FilasTablaConEstilo from "../filasTablaConEstilo/FilasTablaConEstilo";
 const TablaPersonalizada = (props) => {
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = React.useState(5);
-    
+
     const visibleRows = React.useMemo(
         () =>
-          props.rows.slice(
-            page * rowsPerPage,
-            page * rowsPerPage + rowsPerPage,
-          ),
-        [page, rowsPerPage],
-      );
+            props.rows.slice(
+                page * rowsPerPage,
+                page * rowsPerPage + rowsPerPage
+            ),
+        [page, rowsPerPage]
+    );
 
     const handleChangePage = (event, newPage) => {
         setPage(newPage);
@@ -39,7 +39,7 @@ const TablaPersonalizada = (props) => {
                     <TableHead>
                         <TableRow>
                             {props.names.map((name, index) => (
-                                <CeldaTablaConEstilo align="left" key={index}>
+                                <CeldaTablaConEstilo align={name === "Acciones" ? "center" : "left"} key={index}>
                                     {name}
                                 </CeldaTablaConEstilo>
                             ))}
@@ -79,8 +79,10 @@ const TablaPersonalizada = (props) => {
                 page={page}
                 onPageChange={handleChangePage}
                 onRowsPerPageChange={handleChangeRowsPerPage}
-                labelRowsPerPage =  {"Filas por paginas"}
-                labelDisplayedRows={({ from, to, count }) => `${from}-${to} de ${count}`}
+                labelRowsPerPage={"Filas por paginas"}
+                labelDisplayedRows={({ from, to, count }) =>
+                    `${from}-${to} de ${count}`
+                }
             />
         </>
     );
