@@ -36,7 +36,6 @@ const BarraLateral = ({ children }) => {
                 to={item.direccion}
                 key={index}
                 className="enlace"
-                activeclassName="active" /* NO cambiar este nombre de clase */
               >
                 <ListItem>
                   <ListItemText className="textoEnlace" primary={item.name} />

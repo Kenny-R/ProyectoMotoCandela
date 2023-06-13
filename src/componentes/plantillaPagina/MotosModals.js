@@ -11,11 +11,38 @@ import {
     DialogTitle,
 } from "@mui/material";
 
-import { useGlobalAlert } from "../useGlobalAlert";
+import { useGlobalAlert } from "../../hooks/useGlobalAlert";
 
 const PlantillaModal = ({ abierto, setAbierto, crear, data, motos }) => {
     //form fields states
-    const initialState = crear ? "" : data;
+    const initialState = {
+        nombre: crear ? "" : data.nombre,
+        modelo: crear ? "" : data.modelo,
+        arranque: crear ? "" : data.arranque,
+        embrague: crear ? "" : data.embrague,
+        chasis: crear ? "" : data.chasis,
+        suspensionDelantera: crear ? "" : data.suspensionDelantera,
+        recorridoSuspension: crear ? "" : data.recorridoSuspension,
+        diametroFrenoDelantero: crear ? "" : data.diametroFrenoDelantero,
+        frenoTrasero: crear ? "" : data.frenoTrasero,
+        diametroFrenoTrasero: crear ? "" : data.diametroFrenoTrasero,
+        neumaticoDelantero: crear ? "" : data.neumaticoDelantero,
+        llantaDelantera: crear ? "" : data.llantaDelantera,
+        neumaticoTrasero: crear ? "" : data.neumaticoTrasero,
+        llantaTrasera: crear ? "" : data.llantaTrasera,
+        configuracionMotor: crear ? "" : data.configuracionMotor,
+        cicloMotor: crear ? "" : data.cicloMotor,
+        distribucion: crear ? "" : data.distribucion,
+        refrigeracion: crear ? "" : data.refrigeracion,
+        cilindrada: crear ? "" : data.cilindrada,
+        diametroCilindros: crear ? "" : data.diametroCilindros,
+        carreraCilindros: crear ? "" : data.carreraCilindros,
+        relacionCompresion: crear ? "" : data.relacionCompresion,
+        potenciaMaxima: crear ? "" : data.potenciaMaxima,
+        regimenGiroPotenciaMaxima: crear ? "" : data.regimenGiroPotenciaMaxima,
+        parMotorMaximo: crear ? "" : data.parMotorMaximo,
+        alimentacion: crear ? "" : data.alimentacion,
+    };
     const [formState, setFormState] = useState(initialState);
     const tipoProducto = motos ? "moto" : "repuesto";    
 
@@ -68,9 +95,14 @@ const PlantillaModal = ({ abierto, setAbierto, crear, data, motos }) => {
     const { popAlert } = useGlobalAlert();
 
     const handleSubmitDialog = async () => {
-
-        const hayCampoVacio = campos.some((campo) => campo.valor === "");
-
+        let hayCampoVacio = false;
+        
+        for (let key in formState) {
+            if (formState[key] === "") {
+                hayCampoVacio = true;
+                break;
+            }
+        }
         if (hayCampoVacio) {
             popAlert("Hay campos vacios", "error");
             return;
@@ -105,16 +137,16 @@ const PlantillaModal = ({ abierto, setAbierto, crear, data, motos }) => {
                 aria-labelledby="alert-dialog-title"
                 aria-describedby="alert-dialog-description"
                 fullWidth
-                maxWidth="sm"
+                maxWidth="md"
             >
                 <DialogTitle id="alert-dialog-title">
                     {crear ? `Agregar producto de ${tipoProducto}` : `Modificar producto de ${tipoProducto}`}
                 </DialogTitle>
 
                 <DialogContent>
-                    <Grid container rowSpacing={3}>
+                    <Grid container rowSpacing={3} columnSpacing={3}>
                         {campos.map((campo) => (
-                            <Grid item xs={12} key={campo.id}>
+                            <Grid item xs={12} md={6} key={campo.id}>
                                 <TextField
                                     value={formState[campo.id]}
                                     onChange={manejarCambiarDato}

@@ -5,7 +5,7 @@ import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import { AlertProvider } from "./componentes/AlertProvider";
+import { AlertProvider } from "./contextos/AlertProvider";
 
 const theme = createTheme({
   palette: {
