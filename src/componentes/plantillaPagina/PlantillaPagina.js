@@ -29,6 +29,9 @@ const PlantillaPagina = (props) => {
           motos={props.motos}
         />
       )}
+      {modalCarga && (
+        <ModalCarga abierto={modalCarga} setAbierto={setModalCarga} />
+      )}
       <Box
         sx={{
           minWidth: "700px",
