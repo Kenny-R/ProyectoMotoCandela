@@ -1,0 +1,20 @@
+.upload-file {
+  text-align: center;
+}
+
+.drag-file-area {
+  border: 2px dashed #393939;
+  border-radius: 40px;
+  margin: 10px 0 15px;
+  padding: 30px 50px;
+  width: 350px;
+  text-align: center;
+}
+.drag-file-area .icono {
+  margin-bottom: 1.5rem;
+}
+
+.upload-button {
+  margin: 10px;
+  padding: 7.5px 50px;
+}
