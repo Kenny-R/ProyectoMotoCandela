@@ -5,6 +5,7 @@ import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { createTheme, ThemeProvider } from "@mui/material/styles";
+import { AlertProvider } from "./componentes/AlertProvider";
 
 const theme = createTheme({
   palette: {
@@ -22,9 +23,11 @@ const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   
     <BrowserRouter>
-      <Routes>
-        <Route path="/*" element={ <ThemeProvider theme={theme}><App /></ThemeProvider>} />
-      </Routes>
+      <AlertProvider>
+        <Routes>
+          <Route path="/*" element={ <ThemeProvider theme={theme}><App /></ThemeProvider>} />
+        </Routes>
+      </AlertProvider>
     </BrowserRouter>
 
 );
@@ -33,3 +36,4 @@ root.render(
 // to log results (for example: reportWebVitals(console.log))
 // or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
 reportWebVitals();
+

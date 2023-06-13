@@ -1,15 +1,28 @@
+import { useState } from "react";
 import { Grid, Button } from "@mui/material";
+import { PlantillaModal } from "../plantillaPagina/MotosModals";
 
-const Acciones = () => {
+const Acciones = (props) => {
+  const [modificar, setModificar] = useState(false);
+  const [dataModal, setDataModal] = useState([]);
+
+  const manejarModificarProducto = () => {
+    //setDataModal(data); 
+    setModificar(true);
+  };
+
   return (
+    <>
+    {modificar && <PlantillaModal abierto={modificar} setAbierto={setModificar} crear={false} data={dataModal} motos={props.motos}/>}
     <Grid container columns={2} spacing={1}>
         <Grid item xs={1}>
-            <Button variant="contained" color="warning">Modificar</Button>
+            <Button onClick={manejarModificarProducto} variant="contained" color="warning">Modificar</Button>
         </Grid>
         <Grid item xs={1}>
             <Button variant="contained" color="error">Eliminar</Button>
         </Grid>
     </Grid>
+    </>
   )
 }
 

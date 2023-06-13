@@ -1,11 +1,20 @@
-import React from "react";
-import { Box, Grid, Typography, Button } from "@mui/material";
+import React, { useState } from "react";
+import { Box, Grid, Typography, Button, TextField } from "@mui/material";
 import Item from "../item/Item";
 import TablaPersonalizada from "../tablaPersonalizada/TablaPersonalizada";
 import { MdAdd } from "react-icons/md";
+import { PlantillaModal } from "./MotosModals";
 
 const PlantillaPagina = (props) => {
+  const [agregar, setAgregar] = useState(false);
+
+  const manejarAgregarProducto = () => {
+    setAgregar(true);
+  };
+
   return (
+    <>
+    {agregar && <PlantillaModal abierto={agregar} setAbierto={setAgregar} crear={true} data={null} motos={props.motos}/>}
     <Box
       sx={{
         minWidth: "700px",
@@ -32,6 +41,7 @@ const PlantillaPagina = (props) => {
                 <Button
                   variant="contained"
                   color="primary"
+                  onClick={manejarAgregarProducto}
                   startIcon={<MdAdd sx={{ color: "#FFF", fontSize: "1rem" }} />}
                 >
                   Agregar
@@ -50,6 +60,7 @@ const PlantillaPagina = (props) => {
         </Grid>
       </Grid>
     </Box>
+    </>
   );
 };
 
