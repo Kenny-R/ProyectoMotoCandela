@@ -47,7 +47,7 @@ const TablaPersonalizada = (props) => {
                     </TableHead>
                     <TableBody>
                         {visibleRows.map((row) => (
-                            <FilasTablaConEstilo key={row.drag}>
+                            <FilasTablaConEstilo key={row.posicion}>
                                 <CeldaTablaConEstilo align="left">
                                     {row.drag}
                                 </CeldaTablaConEstilo>

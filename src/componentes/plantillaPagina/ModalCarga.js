@@ -14,7 +14,7 @@ const ModalCarga = ({ abierto, setAbierto }) => {
     <Dialog open={abierto} onClose={() => setAbierto(false)}>
       <DialogTitle>Sube un archivo de Excel</DialogTitle>
       <DialogContent>
-        <DroppableComponent />
+        <DroppableComponent abierto={abierto} setAbierto={setAbierto}/>
       </DialogContent>
       <DialogActions>
         <Button onClick={() => setAbierto(false)}>Cancelar</Button>
