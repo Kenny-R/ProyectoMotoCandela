@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import {
     Table,
     TableBody,
@@ -12,25 +12,29 @@ import CeldaTablaConEstilo from "../celdaTablaConEstilo/CeldaTablaConEstilo";
 import FilasTablaConEstilo from "../filasTablaConEstilo/FilasTablaConEstilo";
 
 const TablaPersonalizada = (props) => {
-    const [page, setPage] = useState(0);
-    const [rowsPerPage, setRowsPerPage] = React.useState(5);
+    const [pagina, setPagina] = useState(0);
+    const [filasPorPagina, setFilasPorPagina] = useState(5);
 
-    const visibleRows = React.useMemo(
-        () =>
-            props.rows.slice(
-                page * rowsPerPage,
-                page * rowsPerPage + rowsPerPage
-            ),
-        [page, rowsPerPage]
-    );
+    useEffect (() => {
+        setPagina(0);
+    }, []);
 
-    const handleChangePage = (event, newPage) => {
-        setPage(newPage);
+    const obtenerFilasVisibles = useCallback((filas) => {
+        if (filas == null) return null;
+        const empezarIndice = pagina * filasPorPagina;
+        const terminarIndice = empezarIndice + filasPorPagina;
+        return filas.slice(empezarIndice, terminarIndice);
+    }, [pagina, filasPorPagina]);
+
+    const filasAMostrar = obtenerFilasVisibles(props.filas);
+
+    const cambioDePagina = (event, newPage) => {
+        setPagina(newPage);
     };
 
-    const handleChangeRowsPerPage = (event) => {
-        setRowsPerPage(parseInt(event.target.value, 10));
-        setPage(0);
+    const cambioFilasPorPagina = (event) => {
+        setFilasPorPagina(parseInt(event.target.value, 10));
+        setPagina(0);
     };
     return (
         <>
@@ -38,35 +42,22 @@ const TablaPersonalizada = (props) => {
                 <Table sx={{ minWidth: 700 }} aria-label="customized table">
                     <TableHead>
                         <TableRow>
-                            {props.names.map((name, index) => (
-                                <CeldaTablaConEstilo align={name === "Acciones" ? "center" : "left"} key={index}>
-                                    {name}
+                            {props.columnas.map((columna, indice) => (
+                                <CeldaTablaConEstilo align={columna === "Acciones" ? "center" : "left"} key={indice}>
+                                    {columna}
                                 </CeldaTablaConEstilo>
                             ))}
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {visibleRows.map((row) => (
-                            <FilasTablaConEstilo key={row.posicion}>
-                                <CeldaTablaConEstilo align="left">
-                                    {row.drag}
-                                </CeldaTablaConEstilo>
-                                <CeldaTablaConEstilo align="left">
-                                    {row.posicion}
-                                </CeldaTablaConEstilo>
-                                <CeldaTablaConEstilo align="left">
-                                    {row.modelo}
-                                </CeldaTablaConEstilo>
-                                <CeldaTablaConEstilo align="left">
-                                    {row.reacciones}
-                                </CeldaTablaConEstilo>
-                                <CeldaTablaConEstilo align="left">
-                                    {row.ventas}
-                                </CeldaTablaConEstilo>
-                                <CeldaTablaConEstilo align="left">
-                                    {row.acciones}
-                                </CeldaTablaConEstilo>
-                            </FilasTablaConEstilo>
+                        {filasAMostrar && filasAMostrar.map((fila) => (
+                        <FilasTablaConEstilo key={fila.posicion}>
+                            {Object.values(fila).map((valor, indice) => (
+                            <CeldaTablaConEstilo key={indice} align={ indice === 5 ? "center" : "left"}>
+                                {valor}
+                            </CeldaTablaConEstilo>
+                            ))}
+                        </FilasTablaConEstilo>
                         ))}
                     </TableBody>
                 </Table>
@@ -74,11 +65,11 @@ const TablaPersonalizada = (props) => {
             <TablePagination
                 rowsPerPageOptions={[5, 10, 25]}
                 component="div"
-                count={props.rows.length}
-                rowsPerPage={rowsPerPage}
-                page={page}
-                onPageChange={handleChangePage}
-                onRowsPerPageChange={handleChangeRowsPerPage}
+                count={props.filas.length}
+                rowsPerPage={filasPorPagina}
+                page={pagina}
+                onPageChange={cambioDePagina}
+                onRowsPerPageChange={cambioFilasPorPagina}
                 labelRowsPerPage={"Filas por paginas"}
                 labelDisplayedRows={({ from, to, count }) =>
                     `${from}-${to} de ${count}`

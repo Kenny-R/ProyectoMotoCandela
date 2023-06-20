@@ -5,10 +5,13 @@ import TablaPersonalizada from "../tablaPersonalizada/TablaPersonalizada";
 import { MdAdd } from "react-icons/md";
 import { PlantillaModal } from "./MotosModals";
 import ModalCarga from "./ModalCarga";
+import FiltroTabla from "./FiltroTabla";
 
 const PlantillaPagina = (props) => {
   const [agregar, setAgregar] = useState(false);
   const [modalCarga, setModalCarga] = useState(false);
+  const [filasFiltradas, setFilasFiltradas] = useState(props.filas);
+  const columnasAFiltrar = [props.columnas[1], props.columnas[2]];
 
   const manejarAgregarProducto = () => {
     setAgregar(true);
@@ -59,9 +62,7 @@ const PlantillaPagina = (props) => {
                     variant="contained"
                     color="primary"
                     onClick={manejarAgregarProducto}
-                    startIcon={
-                      <MdAdd sx={{ color: "#FFF", fontSize: "1rem" }} />
-                    }
+                    startIcon={<MdAdd sx={{ color: "#FFF", fontSize: "1rem" }} />}
                   >
                     Agregar
                   </Button>
@@ -76,7 +77,12 @@ const PlantillaPagina = (props) => {
                   </Button>
                 </Grid>
                 <Grid item md={12}>
-                  <TablaPersonalizada rows={props.rows} names={props.names} />
+                  <FiltroTabla
+                    columnasAFiltrar={columnasAFiltrar}
+                    filas={props.filas}
+                    setFilasFiltradas={setFilasFiltradas}
+                  />
+                  <TablaPersonalizada filas={filasFiltradas} columnas={props.columnas} />
                 </Grid>
               </Grid>
             </Item>
