@@ -3,13 +3,14 @@ import { Box, Grid, Typography, Button, TextField } from "@mui/material";
 import Item from "../item/Item";
 import TablaPersonalizada from "../tablaPersonalizada/TablaPersonalizada";
 import { MdAdd } from "react-icons/md";
-import { PlantillaModal } from "./MotosModals";
-import ModalCarga from "./ModalCarga";
+import { PlantillaModal } from "./PlantillaModal";
+import ModalCargaMasiva from "./ModalCargaMasiva";
 import FiltroTabla from "./FiltroTabla";
+import { validacionCamposVacios } from "../../Utilidades/validacionCamposVacios";
 
 const PlantillaPagina = ({ nombreLista, filas, columnas, camposModal, tipoProducto }) => {
   const [agregar, setAgregar] = useState(false);
-  const [modalCarga, setModalCarga] = useState(false);
+  const [modalCargaMasiva, setModalCargaMasiva] = useState(false);
   const [filasFiltradas, setFilasFiltradas] = useState(filas);
   const columnasAFiltrar = [columnas[1], columnas[2]];
 
@@ -18,7 +19,7 @@ const PlantillaPagina = ({ nombreLista, filas, columnas, camposModal, tipoProduc
   };
 
   const manejarCargaMasiva = () => {
-    setModalCarga(!modalCarga);
+    setModalCargaMasiva(!modalCargaMasiva);
   };
 
   return (
@@ -32,8 +33,8 @@ const PlantillaPagina = ({ nombreLista, filas, columnas, camposModal, tipoProduc
           tipoProducto={tipoProducto}
         />
       )}
-      {modalCarga && (
-        <ModalCarga abierto={modalCarga} setAbierto={setModalCarga} />
+      {modalCargaMasiva && (
+        <ModalCargaMasiva abierto={modalCargaMasiva} setAbierto={setModalCargaMasiva} />
       )}
       <Box
         sx={{

@@ -16,31 +16,21 @@ import {
     Box,
 } from "@mui/material";
 
+// alertas
 import { useGlobalAlert } from "../../hooks/useGlobalAlert";
 
-const validacionCamposVacios = (estadoCampos) => {
-    let hayCampoVacio = false;
-
-    for (let campo in estadoCampos) {
-        if (estadoCampos[campo] === '') {
-            hayCampoVacio = true;
-            break;
-        }
-    }
-
-    return hayCampoVacio;
-};
+// funciones utiles
+import { validacionCamposVacios } from "../../Utilidades/validacionCamposVacios";
 
 const pasos = (
     pasoActivo,
-
     campos,
     estadoForm,
     manejarCambiarDato,
     siguientePaso,
     pasoAnterior,
     reiniciarPasos,
-    finalizar,
+    finalizar
 ) => {
     const pasosEtiquetas = [];
     const camposModal = [];
@@ -146,13 +136,13 @@ const PlantillaModal = ({
     tipoProducto,
 }) => {
     //form fields states
-    const [estadoForm, confEstadoForm] = useState(campos);
-    const [pasoActivo, confPasoActivo] = useState(0);
-    const [final, confFinal] = useState(false);
+    const [estadoForm, setEstadoForm] = useState(campos);
+    const [pasoActivo, setPasoActivo] = useState(0);
+    const [final, setFinal] = useState(false);
     const categorias = nombresPasos(campos);
 
     const manejarCambiarDato = (categoria, campo, valor) => {
-        confEstadoForm({
+        setEstadoForm({
             ...estadoForm,
             [categoria]: {
                 ...estadoForm[categoria],
@@ -166,20 +156,24 @@ const PlantillaModal = ({
             popAlert("Hay campos vacios", "error");
             return;
         }
-        confPasoActivo((antPasoActivo) => antPasoActivo + 1);
+        setPasoActivo((antPasoActivo) => antPasoActivo + 1);
     };
 
     const pasoAnterior = () => {
-        confPasoActivo((antPasoActivo) => antPasoActivo - 1);
+        setPasoActivo((antPasoActivo) => antPasoActivo - 1);
     };
 
     const reiniciarPasos = () => {
-        confPasoActivo(0);
-        confFinal(false);
+        setPasoActivo(0);
+        setFinal(false);
     };
 
     const finalizar = () => {
-        confFinal(true);
+        if (validacionCamposVacios(estadoForm[categorias[pasoActivo]])) {
+            popAlert("Hay campos vacios", "error");
+            return;
+        }
+        setFinal(true);
     };
 
     const { popAlert } = useGlobalAlert();
@@ -234,8 +228,7 @@ const PlantillaModal = ({
                         siguientePaso,
                         pasoAnterior,
                         reiniciarPasos,
-                        finalizar,
-                        
+                        finalizar
                     )}
                 </DialogContent>
                 <DialogActions>

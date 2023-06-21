@@ -5,21 +5,21 @@ import * as XLSX from "xlsx";
 import { FaUpload } from "react-icons/fa";
 import { useGlobalAlert } from "../../hooks/useGlobalAlert";
 
-import "./Drop.css";
+import "./ComponenteArrastre.css";
 
-function DroppableComponent({ abierto, setAbierto }) {
+function ComponenteArrastre({ abierto, setAbierto }) {
   const [data, setData] = useState([]);
   const { popAlert } = useGlobalAlert();
 
-  const { acceptedFiles, getRootProps } = useDropzone({
+  const { archivosAceptados, getRootProps } = useDropzone({
     accept: {
       "application/vnd.ms-excel": [".xls"],
       "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet": [
         ".xlsx",
       ],
     },
-    onDrop: (acceptedFiles) => {
-      const file = acceptedFiles[0];
+    onDrop: (archivosAceptados) => {
+      const file = archivosAceptados[0];
 
       if (!file) {
         popAlert("Hubo un error al cargar los datos", "error");
@@ -53,4 +53,4 @@ function DroppableComponent({ abierto, setAbierto }) {
   );
 }
 
-export default DroppableComponent;
+export default ComponenteArrastre;

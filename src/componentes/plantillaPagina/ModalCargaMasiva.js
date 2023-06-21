@@ -7,14 +7,14 @@ import {
   DialogActions,
 } from "@mui/material";
 
-import DroppableComponent from "./DroppableComponent";
+import ComponenteArrastre from "./ComponenteArrastre";
 
-const ModalCarga = ({ abierto, setAbierto }) => {
+const ModalCargaMasiva = ({ abierto, setAbierto }) => {
   return (
     <Dialog open={abierto} onClose={() => setAbierto(false)}>
       <DialogTitle>Sube un archivo de Excel</DialogTitle>
       <DialogContent>
-        <DroppableComponent abierto={abierto} setAbierto={setAbierto}/>
+        <ComponenteArrastre abierto={abierto} setAbierto={setAbierto}/>
       </DialogContent>
       <DialogActions>
         <Button onClick={() => setAbierto(false)}>Cancelar</Button>
@@ -23,4 +23,4 @@ const ModalCarga = ({ abierto, setAbierto }) => {
   );
 };
 
-export default ModalCarga;
+export default ModalCargaMasiva;

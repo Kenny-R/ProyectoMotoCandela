@@ -13,7 +13,7 @@ function App() {
             <GlobalAlert />
             <Routes>
                 {/*Paginas Publicas*/}
-                <Route path="/iniciarSesion" element={<IniciarSesion />} />
+                <Route path="/iniciar-sesion" element={<IniciarSesion />} />
 
                 {/*Paginas privadas*/}
                 <Route

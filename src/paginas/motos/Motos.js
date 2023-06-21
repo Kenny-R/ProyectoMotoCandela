@@ -1,7 +1,7 @@
 import { useState } from "react";
 import Acciones from "../../componentes/acciones/Acciones";
 import PlantillaPagina from "../../componentes/plantillaPagina/PlantillaPagina";
-import { CamposMotos } from "../../Utilidades/Constantes/Constantes/CamposMotosRepuestos";
+import { CamposMotos } from "../../Utilidades/Constantes/CamposMotosRepuestos";
 
 function crearDatos( posicion, Nombre, Modelo, reacciones, ventas, acciones) {
   return { posicion, Nombre, Modelo, reacciones, ventas, acciones };

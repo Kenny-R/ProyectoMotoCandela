@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Grid, Tooltip, IconButton } from "@mui/material";
-import { PlantillaModal } from "../plantillaPagina/MotosModals";
+import { PlantillaModal } from "../plantillaPagina/PlantillaModal";
 import { BsPencil, BsTrash } from 'react-icons/bs';
 
 const Acciones = (props) => {

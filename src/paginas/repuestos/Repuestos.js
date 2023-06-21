@@ -2,7 +2,7 @@ import React from "react";
 import Acciones from "../../componentes/acciones/Acciones";
 import PlantillaPagina from "../../componentes/plantillaPagina/PlantillaPagina";
 
-import { CamposRepuestos } from "../../Utilidades/Constantes/Constantes/CamposMotosRepuestos"; 
+import { CamposRepuestos } from "../../Utilidades/Constantes/CamposMotosRepuestos"; 
 
 function crearDatos(posicion, Nombre, Código, reacciones, ventas, acciones) {
   return { posicion, Nombre, Código, reacciones, ventas, acciones };
