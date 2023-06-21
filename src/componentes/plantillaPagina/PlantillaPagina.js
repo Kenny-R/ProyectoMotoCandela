@@ -7,11 +7,11 @@ import { PlantillaModal } from "./MotosModals";
 import ModalCarga from "./ModalCarga";
 import FiltroTabla from "./FiltroTabla";
 
-const PlantillaPagina = (props) => {
+const PlantillaPagina = ({ nombreLista, filas, columnas, camposModal, tipoProducto }) => {
   const [agregar, setAgregar] = useState(false);
   const [modalCarga, setModalCarga] = useState(false);
-  const [filasFiltradas, setFilasFiltradas] = useState(props.filas);
-  const columnasAFiltrar = [props.columnas[1], props.columnas[2]];
+  const [filasFiltradas, setFilasFiltradas] = useState(filas);
+  const columnasAFiltrar = [columnas[1], columnas[2]];
 
   const manejarAgregarProducto = () => {
     setAgregar(true);
@@ -28,8 +28,8 @@ const PlantillaPagina = (props) => {
           abierto={agregar}
           setAbierto={setAgregar}
           crear={true}
-          data={null}
-          motos={props.motos}
+          campos={camposModal}
+          tipoProducto={tipoProducto}
         />
       )}
       {modalCarga && (
@@ -54,7 +54,7 @@ const PlantillaPagina = (props) => {
                     align="left"
                     sx={{ fontWeight: "600" }}
                   >
-                    {props.nameList}
+                    {nombreLista}
                   </Typography>
                 </Grid>
                 <Grid item md={2}>
@@ -79,10 +79,10 @@ const PlantillaPagina = (props) => {
                 <Grid item md={12}>
                   <FiltroTabla
                     columnasAFiltrar={columnasAFiltrar}
-                    filas={props.filas}
+                    filas={filas}
                     setFilasFiltradas={setFilasFiltradas}
                   />
-                  <TablaPersonalizada filas={filasFiltradas} columnas={props.columnas} />
+                  <TablaPersonalizada filas={filasFiltradas} columnas={columnas} />
                 </Grid>
               </Grid>
             </Item>
