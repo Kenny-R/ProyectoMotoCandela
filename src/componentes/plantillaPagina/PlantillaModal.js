@@ -181,7 +181,6 @@ const PlantillaModal = ({
       },
       body: JSON.stringify({ tipo: tipoProducto, form: estadoForm }),
     }).then((data) => {
-      console.log(data);
       if (data.status === "ok") {
         popAlert("Se agregó el producto exitosamente", "success");
       } else {

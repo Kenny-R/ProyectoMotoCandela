@@ -35,7 +35,6 @@ app.post("/register", async (req, res) => {
       res.send({ status: "error" });
     }
   } else {
-    console.log(func.aplanar(req.body["form"]));
     try {
       await Moto.create(func.aplanar(req.body["form"]));
       res.send({ status: "ok" });
