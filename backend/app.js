@@ -1,3 +1,5 @@
+const func = require("./aplanar.js");
+
 const express = require("express");
 const app = express();
 const mongoose = require("mongoose");
@@ -33,8 +35,9 @@ app.post("/register", async (req, res) => {
       res.send({ status: "error" });
     }
   } else {
+    console.log(func.aplanar(req.body["form"]));
     try {
-      await Moto.create(req.body["form"]);
+      await Moto.create(func.aplanar(req.body["form"]));
       res.send({ status: "ok" });
     } catch (error) {
       res.send({ status: "error" });

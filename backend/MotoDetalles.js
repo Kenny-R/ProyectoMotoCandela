@@ -38,6 +38,4 @@ const MotoDetalles = new mongoose.Schema(
   }
 );
 
-// como ? no te escucho be
-
 mongoose.model("Motos", MotoDetalles);

@@ -181,7 +181,8 @@ const PlantillaModal = ({
       },
       body: JSON.stringify({ tipo: tipoProducto, form: estadoForm }),
     }).then((data) => {
-      if (data.ok) {
+      console.log(data);
+      if (data.status === "ok") {
         popAlert("Se agregó el producto exitosamente", "success");
       } else {
         popAlert("Ocurrio un error al agregar el producto", "error");
@@ -204,7 +205,6 @@ const PlantillaModal = ({
     //   return;
     // }
 
-    window.location.reload();
     setAbierto(false);
   };
 
