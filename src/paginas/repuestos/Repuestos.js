@@ -29,17 +29,18 @@ const Repuestos = () => {
           `Ocurrio un error. Estado de respuesta: ${respuesta.status}`
         );
       }
-      const resultado = await respuesta.json();
-      //setDatos(resultado.data); // aca es donde no se actualiza "datos"
-      console.log(datos);
-      Promise.resolve("Resuelto");
+      return respuesta.json().then((data)=>data).catch((e)=>null);
     } catch (err) {
       console.log(err);
+      return;
     }
   }
 
   useEffect(() => {
-    obtenerRepuesto();
+    const resultados = obtenerRepuesto();
+    if (resultados) {
+      console.log(resultados)
+    }
   }, []);
 
   //eliminar un repuesto

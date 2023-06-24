@@ -55,8 +55,8 @@ app.listen(5000, () => {
 app.get("/obtenerRepuestos", async (req, res) => {
     try {
         const elementoRepuestos = await Repuesto.find({});
-        res.send({ status: "ok", data: elementoRepuestos });
+        res.status(200).json(elementoRepuestos).send();
     } catch (error) {
-        res.send({ status: "error" });
+        res.status(400).send();
     }
 });
