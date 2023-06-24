@@ -15,7 +15,7 @@ const repuestos = [];
 const Repuestos = () => {
   const [datos, setDatos] = useState([]);
 
-  async function obtenerRepuesto() {
+  const obtenerRepuesto = async () => {
     try {
       const respuesta = await fetch("http://localhost:5000/obtenerRepuestos", {
         method: "GET",
@@ -30,7 +30,7 @@ const Repuestos = () => {
         );
       }
       const resultado = await respuesta.json();
-      setDatos(resultado.data); // aca es donde no se actualiza "datos"
+      //setDatos(resultado.data); // aca es donde no se actualiza "datos"
       console.log(datos);
       Promise.resolve("Resuelto");
     } catch (err) {
