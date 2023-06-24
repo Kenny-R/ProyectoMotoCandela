@@ -17,7 +17,7 @@ const TablaPersonalizada = (props) => {
 
     useEffect (() => {
         setPagina(0);
-    }, []);
+    }, [props.filas]);
 
     const obtenerFilasVisibles = useCallback((filas) => {
         if (filas == null) return null;
@@ -51,7 +51,7 @@ const TablaPersonalizada = (props) => {
                     </TableHead>
                     <TableBody>
                         {filasAMostrar && filasAMostrar.map((fila) => (
-                        <FilasTablaConEstilo key={fila.posicion}>
+                        <FilasTablaConEstilo>
                             {Object.values(fila).map((valor, indice) => (
                             <CeldaTablaConEstilo key={indice} align={ indice === 5 ? "center" : "left"}>
                                 {valor}

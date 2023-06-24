@@ -21,7 +21,7 @@ import { useGlobalAlert } from "../../hooks/useGlobalAlert";
 
 // funciones utiles
 import { validacionCamposVacios } from "../../Utilidades/validacionCamposVacios";
-import { registrarProducto } from "../../Utilidades/FetchApis/PeticionBDRepuestos";
+import { registrarProducto } from "../../Utilidades/FetchApis/PeticionesBD";
 
 const pasos = (
     pasoActivo,
