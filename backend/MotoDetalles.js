@@ -7,9 +7,9 @@ const MotoDetalles = new mongoose.Schema(
     Arranque: String,
     Embrague: String,
     Chasis: String,
-    "Distribución": String,
-    "Refigeración": String,
-    "Alimentación": String,
+    Distribución: String,
+    Refigeración: String,
+    Alimentación: String,
     Suspendido: Boolean,
     "Suspensión Delantera": String,
     "Recorrido suspensión delantera": String,
@@ -37,5 +37,5 @@ const MotoDetalles = new mongoose.Schema(
   {
     collection: "Motos",
   }
-).index({Nombre: 1, Modelo: 1}, {unique: true});
+).index({ Nombre: 1, Modelo: 1 }, { unique: true });
 mongoose.model("Motos", MotoDetalles);

@@ -8,6 +8,7 @@ const CamposMotos = {
     Distribución: "",
     Refigeración: "",
     Alimentación: "",
+    Suspendido: false,
   },
   "Parte delantera": {
     "Suspensión Delantera": "",
@@ -52,6 +53,7 @@ const CamposRepuestos = {
     "Número de Parte": "",
     Presentación: "",
     "Más especificaciones": "",
+    Suspendido: false,
   },
 };
 export { CamposMotos, CamposRepuestos };

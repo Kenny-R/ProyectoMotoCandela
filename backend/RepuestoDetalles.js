@@ -11,6 +11,7 @@ const RepuestoDetalles = new mongoose.Schema(
     "Número de Parte": String,
     Presentación: String,
     "Más especificaciones": String,
+    Suspendido: Boolean,
   },
   {
     collection: "Repuestos",
