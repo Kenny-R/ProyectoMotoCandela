@@ -51,7 +51,6 @@ const Acciones = ({ motos, producto, obtenerProductos }) => {
   };
 
   const suspensionProducto = async () => {
-    console.log(producto["Suspendido"]);
     try {
       const respuesta = await peticionSuspensionProducto(
         motos ? "Motos" : "Repuestos",
@@ -79,7 +78,7 @@ const Acciones = ({ motos, producto, obtenerProductos }) => {
         setSuspender(!suspender);
       }
     } catch (err) {
-      console.log(err);
+      popAlert("Hubo un error al cambiar la suspensión del producto", "error");
     }
   };
 

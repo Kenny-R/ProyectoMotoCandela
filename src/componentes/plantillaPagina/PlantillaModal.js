@@ -180,8 +180,6 @@ const PlantillaModal = ({
             JSON.stringify({ tipo: tipoProducto, form: estadoForm })
           )
         : null;
-      console.log(response);
-      console.log(crear);
 
       if (!response.ok) {
         popAlert("Ocurrio un error al agregar el producto", "error");
