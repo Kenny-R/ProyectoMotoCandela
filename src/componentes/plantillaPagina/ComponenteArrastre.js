@@ -45,7 +45,7 @@ function ComponenteArrastre({ abierto, setAbierto }) {
         {...getRootProps()}
         variant="contained"
         component="label"
-        className="upload-button"
+        className="subir-boton"
       >
         Subir archivo
       </Button>
