@@ -128,6 +128,7 @@ const PlantillaModal = ({
   crear,
   campos,
   tipoProducto,
+  obtenerRepuesto,
 }) => {
   //form fields states
   const [estadoForm, setEstadoForm] = useState(campos);
@@ -189,6 +190,8 @@ const PlantillaModal = ({
         `Producto ${crear ? "agregado" : "modificado"} adecuadamente`,
         "success"
       );
+
+      obtenerRepuesto();
     } catch (e) {
       popAlert("Ocurrio un error de red.", "error");
       return;

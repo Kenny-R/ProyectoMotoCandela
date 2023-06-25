@@ -58,6 +58,7 @@ const Repuestos = () => {
       columnas={columnas}
       camposModal={CamposRepuestos}
       tipoProducto={"Repuestos"}
+      obtenerRepuesto={obtenerRepuesto}
     />
   );
 };
