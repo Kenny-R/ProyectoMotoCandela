@@ -1,92 +1,84 @@
 import React, { useEffect, useState } from "react";
 import {
-  Button,
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogActions,
-  Alert,
-  AlertTitle,
+    Button,
+    Dialog,
+    DialogTitle,
+    DialogContent,
+    DialogActions,
+    Alert,
+    AlertTitle,
 } from "@mui/material";
 
 import { useGlobalAlert } from "../../hooks/useGlobalAlert";
+import { peticionEliminarProducto } from "../../Utilidades/FetchApis/PeticionesBD";
 
 const ModalEliminar = ({
-  abierto,
-  setAbierto,
-  motos,
-  producto,
-  obtenerRepuesto,
+    abierto,
+    setAbierto,
+    motos,
+    producto,
+    obtenerProductos,
 }) => {
-  const { popAlert } = useGlobalAlert();
-  const [eliminado, setEliminado] = useState(false);
+    const { popAlert } = useGlobalAlert();
+    const [eliminado, setEliminado] = useState(false);
 
-  const tipo_producto = motos ? "la moto" : "el repuesto";
-  const nombre = producto["Nombre"];
-  const codigo = motos ? producto["Modelo"] : producto["Código de parte"];
+    const tipo_producto = motos ? "la moto" : "el repuesto";
 
-  const eliminarRepuesto = async () => {
-    const respuesta = await fetch("http://localhost:5000/eliminarRepuesto", {
-      method: "POST",
-      crossDomain: true,
-      headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json",
-        "Access-Control-Allow-Origin": "*",
-      },
-      body: JSON.stringify({
-        "Código de parte": codigo,
-      }),
-    });
+    const eliminarProducto = async () => {
+        try {
+            const respuesta = await peticionEliminarProducto(
+                motos ? "Motos" : "Repuestos",
+                motos
+                    ? { Nombre: producto["Nombre"], Modelo: producto["Modelo"] }
+                    : { "Código de parte": producto["Código de parte"] }
+            );
 
-    if (!respuesta.ok) {
-      popAlert("Hubo un error al eliminar el producto", "error");
-    }
+            if (!respuesta.ok) {
+                popAlert("Hubo un error al eliminar el producto", "error");
+            }
 
-    popAlert("Se eliminó correctamente el producto", "success");
-    const contenido = await respuesta.json();
-    if (contenido === "Eliminado") {
-      setEliminado(true);
-      obtenerRepuesto();
-    }
-  };
+            popAlert("Se eliminó correctamente el producto", "success");
+            const contenido = await respuesta.json();
+            if (contenido === "Eliminado") {
+                setEliminado(true);
+                obtenerProductos();
+            }
+        } catch (err) {
+            console.log(err);
+        }
+    };
 
-  const eliminarProducto = () => {
-    if (motos) {
-      // eliminarMoto();
-    } else {
-      eliminarRepuesto();
-    }
-  };
-
-  return (
-    <Dialog open={abierto} onClose={() => setAbierto(false)}>
-      <DialogTitle>
-        ¿Estás seguro que deseas eliminar {tipo_producto} {nombre} del sistema?
-      </DialogTitle>
-      <DialogContent>
-        <Alert severity="warning">
-          <AlertTitle>
-            <strong>Alerta</strong>
-          </AlertTitle>
-          Al eliminar este producto, sus datos también se eliminarán de forma
-          permanente.
-        </Alert>
-      </DialogContent>
-      <DialogActions>
-        <Button onClick={() => setAbierto(false)}>Cancelar</Button>
-        <Button
-          className="eliminar-boton"
-          onClick={() => {
-            setAbierto(false);
-            eliminarProducto();
-          }}
-        >
-          Eliminar
-        </Button>
-      </DialogActions>
-    </Dialog>
-  );
+    return (
+        <>
+            <Dialog open={abierto} onClose={() => setAbierto(false)}>
+                <DialogTitle>
+                    ¿Estás seguro que deseas eliminar {tipo_producto}{" "}
+                    {producto["Nombre"]} del sistema?
+                </DialogTitle>
+                <DialogContent>
+                    <Alert severity="warning">
+                        <AlertTitle>
+                            <strong>Alerta</strong>
+                        </AlertTitle>
+                        Al eliminar este producto, sus datos también se
+                        eliminarán de forma permanente.
+                    </Alert>
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={() => setAbierto(false)}>Cancelar</Button>
+                    <Button
+                        className="eliminar-boton"
+                        onClick={() => {
+                            eliminarProducto();
+                            setAbierto(false);
+                        }}
+                    >
+                        Eliminar
+                    </Button>
+                </DialogActions>
+            </Dialog>
+        </>
+    );
 };
 
 export default ModalEliminar;

@@ -2,14 +2,15 @@ const mongoose = require("mongoose");
 
 const MotoDetalles = new mongoose.Schema(
   {
-    Nombre: { type: String, unique: true },
-    Modelo: { type: String, unique: true },
+    Nombre: String,
+    Modelo: String,
     Arranque: String,
     Embrague: String,
     Chasis: String,
-    Distribución: String,
-    Refigeración: String,
-    Alimentación: String,
+    "Distribución": String,
+    "Refigeración": String,
+    "Alimentación": String,
+    Suspendido: Boolean,
     "Suspensión Delantera": String,
     "Recorrido suspensión delantera": String,
     "Freno Delantero": String,
@@ -29,13 +30,12 @@ const MotoDetalles = new mongoose.Schema(
     "Par motor maximo (Nm)": String,
     "Regimen de giro del motor para el par maximo (rpm)": String,
     Cilindrada: String,
-    "Diamtro de cilindros (mm)": String,
+    "Diámetro de cilindros (mm)": String,
     "Carrera de cilindros (mm)": String,
     "Relación de compresión": String,
   },
   {
     collection: "Motos",
   }
-);
-
+).index({Nombre: 1, Modelo: 1}, {unique: true});
 mongoose.model("Motos", MotoDetalles);

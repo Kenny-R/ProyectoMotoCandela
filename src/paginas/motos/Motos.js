@@ -1,44 +1,66 @@
-import { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Acciones from "../../componentes/acciones/Acciones";
 import PlantillaPagina from "../../componentes/plantillaPagina/PlantillaPagina";
-import { CamposMotos } from "../../Utilidades/Constantes/CamposMotosRepuestos";
 
-function crearDatos(posicion, Nombre, Modelo, reacciones, ventas, acciones) {
-  return { posicion, Nombre, Modelo, reacciones, ventas, acciones };
+import { CamposMotos } from "../../Utilidades/Constantes/CamposMotosRepuestos";
+import { peticionObtenerProductos } from "../../Utilidades/FetchApis/PeticionesBD";
+
+function crearDatos(nombre, modelo, acciones) {
+    return {
+        Nombre: nombre,
+        Modelo: modelo,
+        Acciones: acciones,
+    };
 }
 
-const columnas = ["#", "Nombre", "Modelo", "Reacciones", "Ventas", "Acciones"];
-
-const motos = [
-  crearDatos(1, "benelli rk6", "New Owen", 0, 0, <Acciones motos={true} />),
-  crearDatos(2, "benelli rk6", "New Owen", 0, 0, <Acciones motos={true} />),
-  crearDatos(3, "benelli rk6", "New Owen", 0, 0, <Acciones motos={true} />),
-  crearDatos(4, "benelli rk6", "New Owen", 0, 0, <Acciones motos={true} />),
-  crearDatos(5, "benelli rk6", "New Owen", 0, 0, <Acciones motos={true} />),
-  crearDatos(6, "benelli rk6", "New Owen", 0, 0, <Acciones motos={true} />),
-  crearDatos(7, "benelli rk6", "New Owen", 0, 0, <Acciones motos={true} />),
-  crearDatos(8, "benelli rk6", "New Owen", 0, 0, <Acciones motos={true} />),
-  crearDatos(9, "benelli rk6", "New Owen", 0, 0, <Acciones motos={true} />),
-  crearDatos(10, "benelli rk6", "New Owen", 0, 0, <Acciones motos={true} />),
-  crearDatos(11, "benelli rk6", "New Owen", 0, 0, <Acciones motos={true} />),
-  crearDatos(12, "benelli rk6", "New Owen", 0, 0, <Acciones motos={true} />),
-  crearDatos(13, "benelli rk6", "New Owen", 0, 0, <Acciones motos={true} />),
-  crearDatos(14, "benelli rk6", "New Owen", 0, 0, <Acciones motos={true} />),
-  crearDatos(15, "benelli rk6", "New Owen", 0, 0, <Acciones motos={true} />),
-];
+const columnas = ["Nombre", "Modelo", "Acciones"];
 
 const Motos = () => {
-  const [camposMotos, setCamposMotos] = useState(CamposMotos);
+    const [datos, setDatos] = useState([]);
 
-  return (
-    <PlantillaPagina
-      nombreLista="Lista de Motos"
-      filas={motos}
-      columnas={columnas}
-      camposModal={camposMotos}
-      tipoProducto={"Motos"}
-    />
-  );
+    const obtenerMotos = async () => {
+        try {
+            const respuesta = await peticionObtenerProductos("Motos");
+
+            if (!respuesta.ok) {
+                throw new Error(
+                    `Ocurrio un error. Estado de respuesta: ${respuesta.status}`
+                );
+            }
+            const contenido = await respuesta.json();
+            const motos = contenido.map((moto) => {
+                return crearDatos(
+                    moto["Nombre"],
+                    moto["Modelo"],
+                    <Acciones
+                        motos={true}
+                        producto={moto}
+                        obtenerProductos={obtenerMotos}
+                    />
+                );
+            });
+            setDatos(motos);
+        } catch (err) {
+            console.log(err);
+        }
+    };
+
+    useEffect(() => {
+        obtenerMotos();
+    }, []);
+
+    return (
+        <>
+            <PlantillaPagina
+                nombreLista="Lista de Motos"
+                filas={datos}
+                columnas={columnas}
+                camposModal={CamposMotos}
+                tipoProducto={"Motos"}
+                obtenerProductos={obtenerMotos}
+            />
+        </>
+    );
 };
 
 export default Motos;

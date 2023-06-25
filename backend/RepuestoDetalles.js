@@ -17,6 +17,4 @@ const RepuestoDetalles = new mongoose.Schema(
   }
 );
 
-// como ? no te escucho be
-
 mongoose.model("Repuestos", RepuestoDetalles);

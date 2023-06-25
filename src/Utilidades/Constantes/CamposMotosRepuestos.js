@@ -35,7 +35,7 @@ const CamposMotos = {
   },
   Cilindros: {
     Cilindrada: "",
-    "Diamtro de cilindros (mm)": "",
+    "Diámetro de cilindros (mm)": "",
     "Carrera de cilindros (mm)": "",
     "Relación de compresión": "",
   },
