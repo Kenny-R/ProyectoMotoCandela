@@ -4,6 +4,7 @@ import PlantillaPagina from "../../componentes/plantillaPagina/PlantillaPagina";
 
 import { CamposMotos } from "../../Utilidades/Constantes/CamposMotosRepuestos";
 import { peticionObtenerProductos } from "../../Utilidades/FetchApis/PeticionesBD";
+import { clasificar, obtenerClases } from "../../Utilidades/funciones/funcionesAplanarDatos";
 
 function crearDatos(nombre, modelo, acciones) {
     return {
@@ -36,6 +37,7 @@ const Motos = () => {
                         motos={true}
                         producto={moto}
                         obtenerProductos={obtenerMotos}
+                        productoClasificado={clasificar(obtenerClases(CamposMotos),moto)}
                     />
                 );
             });

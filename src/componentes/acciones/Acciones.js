@@ -7,46 +7,19 @@ import { FaLock, FaLockOpen } from "react-icons/fa";
 import { peticionSuspensionProducto } from "../../Utilidades/FetchApis/PeticionesBD";
 import { useGlobalAlert } from "../../hooks/useGlobalAlert";
 
-const Acciones = ({ motos, producto, obtenerProductos }) => {
+const Acciones = ({ motos, producto, obtenerProductos, productoClasificado }) => {
   const { popAlert } = useGlobalAlert();
   const [suspender, setSuspender] = useState(producto["Suspendido"]);
   const [modificar, setModificar] = useState(false);
   const [eliminar, setEliminar] = useState(false);
-  const [dataModal, setDataModal] = useState({
-    nombre: "",
-    modelo: "",
-    arranque: "",
-    embrague: "",
-    chasis: "",
-    suspensionDelantera: "",
-    recorridoSuspension: "",
-    diametroFrenoDelantero: "",
-    frenoTrasero: "",
-    diametroFrenoTrasero: "",
-    neumaticoDelantero: "",
-    llantaDelantera: "",
-    neumaticoTrasero: "",
-    llantaTrasera: "",
-    configuracionMotor: "",
-    cicloMotor: "",
-    distribucion: "",
-    refrigeracion: "",
-    cilindrada: "",
-    diametroCilindros: "",
-    carreraCilindros: "",
-    relacionCompresion: "",
-    potenciaMaxima: "",
-    regimenGiroPotenciaMaxima: "",
-    parMotorMaximo: "",
-    alimentacion: "",
-  });
 
   const manejarModificarProducto = () => {
-    setDataModal(producto);
+    console.log(productoClasificado)
     setModificar(true);
   };
 
   const manejarEliminarProducto = () => {
+    console.log(producto);
     setEliminar(true);
   };
 
@@ -101,8 +74,8 @@ const Acciones = ({ motos, producto, obtenerProductos }) => {
           abierto={modificar}
           setAbierto={setModificar}
           crear={false}
-          data={dataModal}
-          motos={motos}
+          campos={productoClasificado}
+          tipoProducto={motos ? "Motos" : "Repuestos"}
         />
       )}
       {eliminar && (
@@ -138,7 +111,8 @@ const Acciones = ({ motos, producto, obtenerProductos }) => {
         )}
         <Grid item xs={1.1} align="center">
           <Tooltip title="Modificar producto" arrow>
-            <IconButton color="primary">
+            <IconButton color="primary"
+            onClick={manejarModificarProducto}>
               <BsPencil />
             </IconButton>
           </Tooltip>

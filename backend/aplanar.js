@@ -1,4 +1,6 @@
-// Funcion para aplanar un objeto
+/**
+ * Toma un json de dos niveles 
+ */
 const aplanar = (ob) => {
   let resultado = {};
 
