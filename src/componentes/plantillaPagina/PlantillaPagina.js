@@ -34,6 +34,25 @@ const PlantillaPagina = ({
     setModalCargaMasiva(!modalCargaMasiva);
   };
 
+  const keyframes = `
+    @-webkit-keyframes fade-out {
+      0% {
+        opacity: 1;
+      }
+      100% {
+        opacity: 0;
+      }
+    }
+    @keyframes fade-out {
+      0% {
+        opacity: 1;
+      }
+      100% {
+        opacity: 0;
+      }
+    }
+  `;
+
   return (
     <>
       {agregar && (
@@ -108,7 +127,18 @@ const PlantillaPagina = ({
                     filas={filas}
                     setFilasFiltradas={setFilasFiltradas}
                   />
-                  {cargando && <SyncLoader margin={100} cssOverride={{border: "1px black"}}/>}
+                  {cargando && (
+                    <div>
+                      <style>{keyframes}</style>
+                      <SyncLoader
+                        margin={100}
+                        cssOverride={{
+                          animation: "fade-out 0.5s ease-out both",
+                          WebkitAnimation: "fade-out 0.5s ease-out both",
+                        }}
+                      />
+                    </div>
+                  )}
                   {!cargando && (
                     <TablaPersonalizada
                       filas={filasFiltradas}
