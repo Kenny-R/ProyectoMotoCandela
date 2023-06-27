@@ -1,21 +1,19 @@
 const mongoose = require("mongoose");
 
-const RepuestoDetalles = new mongoose.Schema(
-  {
-    Nombre: String,
+const esquema = {
+    Nombre: {type: String, required: true},
     "Código de parte": { type: String, unique: true },
-    Modelo: String,
-    Descripción: String,
-    Color: String,
-    Artículo: String,
-    "Número de Parte": String,
-    Presentación: String,
-    "Más especificaciones": String,
-    Suspendido: Boolean,
-  },
-  {
-    collection: "Repuestos",
-  }
-);
+    Modelo: {type: String, required: true},
+    Descripción: {type: String, required: true},
+    Color: {type: String, required: true},
+    Artículo: {type: String, required: true},
+    "Número de Parte": {type: String, required: true},
+    Presentación: {type: String, required: true},
+    "Más especificaciones": {type: String, required: true},
+    Suspendido: {type: Boolean, required:true},
+};
 
+const RepuestoDetalles = new mongoose.Schema(esquema, {
+    collection: "Repuestos",
+});
 mongoose.model("Repuestos", RepuestoDetalles);

@@ -50,6 +50,8 @@ const PlantillaPagina = ({
         <ModalCargaMasiva
           abierto={modalCargaMasiva}
           setAbierto={setModalCargaMasiva}
+          tipoProducto={tipoProducto}
+          obtenerProductos={obtenerProductos}
         />
       )}
       <Box
@@ -106,7 +108,7 @@ const PlantillaPagina = ({
                     filas={filas}
                     setFilasFiltradas={setFilasFiltradas}
                   />
-                  {cargando && <SyncLoader margin={100} cssOverride={border: "1px black"}/>}
+                  {cargando && <SyncLoader margin={100} cssOverride={{border: "1px black"}}/>}
                   {!cargando && (
                     <TablaPersonalizada
                       filas={filasFiltradas}

@@ -49,3 +49,16 @@ export const peticionSuspensionProducto = async (tipoProducto, datos) => {
     body: JSON.stringify({ tipo: tipoProducto, datos: datos }),
   });
 };
+
+export const peticionAgregacionMasivaProducto = async (tipoProducto, datos) => {
+  return fetch("http://localhost:5000/agregacionMasivaProducto", {
+    method: "POST",
+    crossDomain: true,
+    headers: {
+      "Content-Type": "application/json",
+      Accept: "application/json",
+      "Access-Control-Allow-Origin": "*",
+    },
+    body: JSON.stringify({ tipo: tipoProducto, datos: datos }),
+  });
+}
