@@ -11,7 +11,7 @@ import "./estilosBarraLateral.css";
 const BarraLateral = ({ children }) => {
   const menuItems = [
     {
-      direccion: "/",
+      direccion: "/motos",
       name: "Motos",
       icono: <FaMotorcycle className="icono" />,
     },
@@ -26,7 +26,7 @@ const BarraLateral = ({ children }) => {
       <Box className="container" component="div">
         <Box className="barraLateral" component="div">
           <Box className="contenedorLogo" component="div">
-            <Link to="/">
+            <Link to="/motos">
               <img src={logo} className="logo" alt="Logo de Keeway" />
             </Link>
           </Box>

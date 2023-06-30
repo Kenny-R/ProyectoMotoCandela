@@ -7,31 +7,36 @@ import Motos from "./paginas/motos/Motos";
 import Repuestos from "./paginas/repuestos/Repuestos";
 import "./App.css";
 import GlobalAlert from "./componentes/GlobalAlert";
+import RequiereAutorizacion from "./componentes/autorizacion/RequiereAutorizacion";
+
 function App() {
     return (
         <>
             <GlobalAlert />
             <Routes>
                 {/*Paginas Publicas*/}
-                <Route path="/iniciar-sesion" element={<IniciarSesion />} />
+                <Route path="/" element={<IniciarSesion />} />
 
                 {/*Paginas privadas*/}
-                <Route
-                    path="/"
-                    element={
-                        <BarraLateral>
-                            <Motos />
-                        </BarraLateral>
-                    }
-                />
-                <Route
-                    path="/repuestos"
-                    element={
-                        <BarraLateral>
-                            <Repuestos />
-                        </BarraLateral>
-                    }
-                />
+                <Route element={<RequiereAutorizacion />}>
+                    <Route
+                        path="/motos"
+                        element={
+                            <BarraLateral>
+                                <Motos />
+                            </BarraLateral>
+                        }
+                    />
+
+                    <Route
+                        path="/repuestos"
+                        element={
+                            <BarraLateral>
+                                <Repuestos />
+                            </BarraLateral>
+                        }
+                    />
+                </Route>
 
                 {/*Otras*/}
                 <Route
