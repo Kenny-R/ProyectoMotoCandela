@@ -54,15 +54,18 @@ const Usuario = mongoose.model("Usuarios");
 //////////////////////////////////////////////////////////////
 
 const estaAutorizado = (req) => {
-    console.log("estoy verificando si esta autorizado")
-    console.log(req.cookies);
     if (!req.cookies.JWT) {
         return false;
     }
     
-    const verificacionToken = jwt.verify(req.cookies.JWT, "EmpanadaDeJamonYQueso");
-    
-    if (!verificacionToken) {
+    try {
+        const verificacionToken = jwt.verify(req.cookies.JWT, "EmpanadaDeJamonYQueso");
+        if (!verificacionToken) {
+
+            return false;
+        }
+    } catch (e) {
+        console.log(e);
         return false;
     }
     
@@ -75,7 +78,6 @@ const estaAutorizado = (req) => {
 //////////////////////////////////////////////////////////////
 
 app.post("/iniciar-sesion", async (req, res) => {
-    console.log("quiero iniciar sesion");
     try {
         const usuario = await Usuario.findOne({Usuario: req.body.Usuario});
         if (!usuario) {
@@ -83,7 +85,7 @@ app.post("/iniciar-sesion", async (req, res) => {
             return;
         }
     
-        const comparacionContraseñas = await bcrypt.compare(req.body.Contraseña, usuario.Contraseña);
+        const comparacionContraseñas = await bcrypt.compare(atob(req.body.Contraseña), usuario.Contraseña);
         
         if (!comparacionContraseñas) {
             res.status(400).json({error:"La contraseña no es correcta"}).send();
@@ -100,15 +102,17 @@ app.post("/iniciar-sesion", async (req, res) => {
     }
 })
 
-app.get("/cerrar-sesion" , async (req, res) => {
-    res.clearCookie("JWT").json({response: "se ha cerrado la sesion"}).send();
+app.get("/cerrar-sesion" , (req, res) => {
+    res.clearCookie("JWT");
+    res.send();
+    return;
 })
 
 app.get("/comprobar-sesion", async (req,res) => {
     if (estaAutorizado(req)) {
         res.status(200).send();
     } else {
-        res.status(400).send();
+        res.clearCookie("JWT").status(400).send();
     }
 })
 
@@ -119,7 +123,7 @@ app.get("/comprobar-sesion", async (req,res) => {
 app.post("/register", async (req, res) => {
     try {
         if (!estaAutorizado(req)) 
-            throw "no estas autorizado";
+            throw new Error("no estas autorizado");
 
         if (req.body["tipo"] === "Repuestos") {
             await Repuesto.create(req.body["form"]["Información Basica"]);
@@ -137,7 +141,7 @@ app.post("/register", async (req, res) => {
 app.get("/obtenerProductos", async (req, res) => {
     try {
         if (!estaAutorizado(req)) 
-            throw "no estas autorizado";
+            throw new Error("no estas autorizado");
 
         let elementoProducto = [];
         if (req.query.tipo === "Repuestos") {
@@ -145,7 +149,7 @@ app.get("/obtenerProductos", async (req, res) => {
         } else if (req.query.tipo === "Motos") {
             elementoProducto = await Moto.find({});
         } else {
-            throw "no existe ese tipo de producto";
+            throw new Error("no existe ese tipo de producto");
         }
         res.status(200).json(elementoProducto).send();
     } catch (error) {
@@ -156,7 +160,7 @@ app.get("/obtenerProductos", async (req, res) => {
 app.post("/eliminarProducto", async (req, res) => {
     try {
         if (!estaAutorizado(req)) 
-            throw "no estas autorizado";
+            throw new Error("no estas autorizado");
 
         if (req.body["tipo"] === "Repuestos") {
             Repuesto.deleteOne(
@@ -193,7 +197,7 @@ app.post("/eliminarProducto", async (req, res) => {
 app.post("/suspensionProducto", async (req, res) => {
     try {
         if (!estaAutorizado(req)) 
-            throw "no estas autorizado";
+            throw new Error("no estas autorizado");
 
         if (req.body["tipo"] === "Repuestos") {
             Repuesto.findOneAndUpdate(
@@ -234,7 +238,7 @@ app.post("/agregacionMasivaProducto", async (req, res) => {
     sesion.startTransaction();
     try {
         if (!estaAutorizado(req)) 
-            throw "no estas autorizado";
+            throw new Error("no estas autorizado");
 
         if (req.body["tipo"] === "Repuestos") {
             await Repuesto.insertMany(req.body["datos"], { sesion });

@@ -91,3 +91,14 @@ export const iniciarSesion = async (body) => {
     body: JSON.stringify(body),
   })
 }
+
+export const cerrarSesion = async () => {
+  return fetch("http://localhost:5000/cerrar-sesion", {
+    method: "GET",
+    crossDomain: true,
+    credentials:"include",
+    headers: {
+      "Content-Type": "application/json"
+    },
+  })
+}

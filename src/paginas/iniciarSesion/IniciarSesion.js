@@ -2,7 +2,10 @@ import { React, useEffect, useState } from "react";
 import { styled } from "@mui/material/styles";
 import { Button, Box, TextField, Typography } from "@mui/material/";
 import "./estilosIniciarSesion.css";
-import { iniciarSesion } from "../../Utilidades/FetchApis/PeticionesBD";
+import {
+    chequearSesion,
+    iniciarSesion,
+} from "../../Utilidades/FetchApis/PeticionesBD";
 import { useLocation, useNavigate } from "react-router-dom";
 
 const IniciarSesion = () => {
@@ -12,20 +15,34 @@ const IniciarSesion = () => {
     const location = useLocation();
 
     useEffect(() => {
-        const cookies = document.cookie;
-        if (cookies.match(/JWT=.*;*/g))
-            navigate("/motos", { state: { from: location }, replace: true });
+        const comprobarSiInicioSesion = async () => {
+            try {
+                const respuesta = await chequearSesion();
+                if (!respuesta.ok) {
+                    throw new Error("problemas con la conexion al servidor");
+                }
+                navigate("/motos", {
+                    state: { from: location },
+                    replace: true,
+                });
+            } catch (e) {
+                console.log(e);
+            }
+        };
+
+        comprobarSiInicioSesion();
     }, []);
 
     const handleSubmit = async () => {
         if (usuario && contraseha) {
             try {
+                const contraseñaEncriptada = btoa(contraseha);
                 const respuesta = await iniciarSesion({
                     Usuario: usuario,
-                    Contraseña: contraseha,
+                    Contraseña: contraseñaEncriptada,
                 });
                 if (!respuesta.ok) {
-                    throw "No puedes iniciar sesion";
+                    throw new Error("No puedes iniciar sesion");
                 }
                 console.log(respuesta);
                 navigate("/motos", {
