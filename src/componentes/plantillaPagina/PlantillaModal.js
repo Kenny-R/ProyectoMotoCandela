@@ -175,16 +175,24 @@ const PlantillaModal = ({
 
   const handleSubmitDialog = async () => {
     try {
-      const response = crear
+      const respuesta = crear
         ? await peticionRegistrarProducto(
             JSON.stringify({ tipo: tipoProducto, form: estadoForm })
           )
         : null;
 
-      if (!response.ok) {
-        popAlert("Ocurrio un error al agregar el producto", "error");
+      const contenido = await respuesta.json();
+      if (contenido === "Codigo duplicado") {
+        popAlert(
+          "Existe un producto con código duplicado. Por favor, revise el archivo.",
+          "error"
+        );
+        return;
+      } else if (!respuesta.ok) {
+        popAlert("Hubo un error al cargar los datos.", "error");
         return;
       }
+
       popAlert(
         `Producto ${crear ? "agregado" : "modificado"} adecuadamente`,
         "success"
@@ -192,7 +200,7 @@ const PlantillaModal = ({
 
       obtenerProductos();
     } catch (e) {
-      popAlert("Ocurrio un error de red.", "error");
+      popAlert("Ocurrió un error de red.", "error");
       return;
     }
 

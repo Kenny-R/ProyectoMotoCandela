@@ -7,14 +7,19 @@ import { FaLock, FaLockOpen } from "react-icons/fa";
 import { peticionSuspensionProducto } from "../../Utilidades/FetchApis/PeticionesBD";
 import { useGlobalAlert } from "../../hooks/useGlobalAlert";
 
-const Acciones = ({ motos, producto, obtenerProductos, productoClasificado }) => {
+const Acciones = ({
+  motos,
+  producto,
+  obtenerProductos,
+  productoClasificado,
+}) => {
   const { popAlert } = useGlobalAlert();
   const [suspender, setSuspender] = useState(producto["Suspendido"]);
   const [modificar, setModificar] = useState(false);
   const [eliminar, setEliminar] = useState(false);
 
   const manejarModificarProducto = () => {
-    console.log(productoClasificado)
+    console.log(productoClasificado);
     setModificar(true);
   };
 
@@ -41,7 +46,7 @@ const Acciones = ({ motos, producto, obtenerProductos, productoClasificado }) =>
 
       if (!respuesta.ok) {
         popAlert(
-          "Hubo un error al cambiar la suspensión del producto",
+          "Hubo un error al cambiar la suspensión del producto.",
           "error"
         );
       }
@@ -51,7 +56,7 @@ const Acciones = ({ motos, producto, obtenerProductos, productoClasificado }) =>
         setSuspender(!suspender);
       }
     } catch (err) {
-      popAlert("Hubo un error al cambiar la suspensión del producto", "error");
+      popAlert("Hubo un error al cambiar la suspensión del producto.", "error");
     }
   };
 
@@ -59,11 +64,11 @@ const Acciones = ({ motos, producto, obtenerProductos, productoClasificado }) =>
     suspensionProducto();
     if (suspender) {
       popAlert(
-        "Se levantó correctamente la suspensión del producto",
+        "Se levantó correctamente la suspensión del producto.",
         "success"
       );
     } else {
-      popAlert("Se suspendió correctamente el producto", "success");
+      popAlert("Se suspendió correctamente el producto.", "success");
     }
   };
 
@@ -111,8 +116,7 @@ const Acciones = ({ motos, producto, obtenerProductos, productoClasificado }) =>
         )}
         <Grid item xs={1.1} align="center">
           <Tooltip title="Modificar producto" arrow>
-            <IconButton color="primary"
-            onClick={manejarModificarProducto}>
+            <IconButton color="primary" onClick={manejarModificarProducto}>
               <BsPencil />
             </IconButton>
           </Tooltip>

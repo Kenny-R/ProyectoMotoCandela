@@ -10,6 +10,7 @@ const cors = require("cors");
 const bcrypt = require("bcryptjs");
 const cp = require("cookie-parser");
 const jwt = require("jsonwebtoken");
+const { MongoBulkWriteError } = require("mongodb");
 
 //////////////////////////////////////////////////////////////
 // Midleware de express
@@ -26,16 +27,16 @@ app.use(cp());
 //////////////////////////////////////////////////////////////
 
 const mongoUrl =
-    "mongodb+srv://1910096:u2NnyYPZGiGi7bTO@prueba.stlmnyp.mongodb.net/";
+  "mongodb+srv://1910096:u2NnyYPZGiGi7bTO@prueba.stlmnyp.mongodb.net/";
 
 mongoose
-    .connect(mongoUrl, {
-        useNewUrlParser: true,
-    })
-    .then(() => {
-        console.log("Conectado al base de datos");
-    })
-    .catch((e) => console.log(e));
+  .connect(mongoUrl, {
+    useNewUrlParser: true,
+  })
+  .then(() => {
+    console.log("Conectado al base de datos");
+  })
+  .catch((e) => console.log(e));
 
 //////////////////////////////////////////////////////////////
 // Modelos de la base de datos
@@ -54,25 +55,25 @@ const Usuario = mongoose.model("Usuarios");
 //////////////////////////////////////////////////////////////
 
 const estaAutorizado = (req) => {
-    if (!req.cookies.JWT) {
-        return false;
-    }
+  if (!req.cookies.JWT) {
+    return false;
+  }
 
-    try {
-        const verificacionToken = jwt.verify(
-            req.cookies.JWT,
-            "EmpanadaDeJamonYQueso"
-        );
-        if (!verificacionToken) {
-            return false;
-        }
-    } catch (e) {
-        console.log(e);
-        return false;
+  try {
+    const verificacionToken = jwt.verify(
+      req.cookies.JWT,
+      "EmpanadaDeJamonYQueso"
+    );
+    if (!verificacionToken) {
+      return false;
     }
+  } catch (e) {
+    console.log(e);
+    return false;
+  }
 
-    req.payload = jwt.decode(req.cookies.JWT, "EmpanadaDeJamonYQueso");
-    return true;
+  req.payload = jwt.decode(req.cookies.JWT, "EmpanadaDeJamonYQueso");
+  return true;
 };
 
 //////////////////////////////////////////////////////////////
@@ -80,51 +81,51 @@ const estaAutorizado = (req) => {
 //////////////////////////////////////////////////////////////
 
 app.post("/iniciar-sesion", async (req, res) => {
-    try {
-        const usuario = await Usuario.findOne({ Usuario: req.body.Usuario });
-        if (!usuario) {
-            res.status(400).json({ error: "El usuario no existe" }).send();
-            return;
-        }
-
-        const comparacionContraseñas = await bcrypt.compare(
-            atob(req.body.Contraseña),
-            usuario.Contraseña
-        );
-
-        if (!comparacionContraseñas) {
-            res.status(400)
-                .json({ error: "La contraseña no es correcta" })
-                .send();
-            return;
-        }
-
-        const contenido = { Usuario: usuario.Usuario };
-        const token = jwt.sign(contenido, "EmpanadaDeJamonYQueso");
-
-        res.cookie("JWT", token, {
-            httpOnly: true,
-            maxAge: 24 * 60 * 60 * 1000,
-        }).send();
-    } catch {
-        res.status(400).json({
-            error: "ha ocurrido un error al procesar su solicitud",
-        });
+  try {
+    const usuario = await Usuario.findOne({ Usuario: req.body.Usuario });
+    if (!usuario) {
+      res.status(400).json({ error: "El usuario no existe" }).send();
+      return;
     }
+
+    const comparacionContraseñas = await bcrypt.compare(
+      atob(req.body.Contraseña),
+      usuario.Contraseña
+    );
+
+    if (!comparacionContraseñas) {
+      res.status(400).json({ error: "La contraseña no es correcta" }).send();
+      return;
+    }
+
+    const contenido = { Usuario: usuario.Usuario };
+    const token = jwt.sign(contenido, "EmpanadaDeJamonYQueso");
+
+    res
+      .cookie("JWT", token, {
+        httpOnly: true,
+        maxAge: 24 * 60 * 60 * 1000,
+      })
+      .send();
+  } catch {
+    res.status(400).json({
+      error: "ha ocurrido un error al procesar su solicitud",
+    });
+  }
 });
 
 app.get("/cerrar-sesion", (req, res) => {
-    res.clearCookie("JWT");
-    res.send();
-    return;
+  res.clearCookie("JWT");
+  res.send();
+  return;
 });
 
 app.get("/comprobar-sesion", async (req, res) => {
-    if (estaAutorizado(req)) {
-        res.status(200).send();
-    } else {
-        res.clearCookie("JWT").status(400).send();
-    }
+  if (estaAutorizado(req)) {
+    res.status(200).send();
+  } else {
+    res.clearCookie("JWT").status(400).send();
+  }
 });
 
 //////////////////////////////////////////////////////////////
@@ -132,170 +133,184 @@ app.get("/comprobar-sesion", async (req, res) => {
 //////////////////////////////////////////////////////////////
 
 app.post("/register", async (req, res) => {
-    try {
-        if (!estaAutorizado(req)) throw new Error("no estas autorizado");
+  try {
+    if (!estaAutorizado(req)) throw new Error("No estas autorizado.");
 
-        if (req.body["tipo"] === "Repuestos") {
-            await Repuesto.create(req.body["form"]["Información Basica"]);
-        } else if (req.body["tipo"] === "Motos") {
-            await Moto.create(func.aplanar(req.body["form"]));
-        }
-
-        res.status(200).send();
-    } catch (error) {
-        console.log(error);
-        res.status(400).send();
+    if (req.body["tipo"] === "Repuestos") {
+      await Repuesto.create(req.body["form"]["Información Basica"]);
+    } else if (req.body["tipo"] === "Motos") {
+      await Moto.create(func.aplanar(req.body["form"]));
     }
+
+    res.status(200).send();
+  } catch (error) {
+    if ((error.code = 11000)) {
+      // existe algun producto con codigo igual a otro
+      res.status(400).json("Codigo duplicado").send();
+    } else {
+      res.status(400).send();
+    }
+  }
 });
 
 app.get("/obtenerProductos", async (req, res) => {
-    try {
-        if (!estaAutorizado(req)) throw new Error("no estas autorizado");
+  try {
+    if (!estaAutorizado(req)) throw new Error("No estas autorizado.");
 
-        let elementoProducto = [];
-        if (req.query.tipo === "Repuestos") {
-            elementoProducto = await Repuesto.find({});
-        } else if (req.query.tipo === "Motos") {
-            elementoProducto = await Moto.find({});
-        } else {
-            throw new Error("no existe ese tipo de producto");
-        }
-        res.status(200).json(elementoProducto).send();
-    } catch (error) {
-        res.status(400).send();
+    let elementoProducto = [];
+    if (req.query.tipo === "Repuestos") {
+      elementoProducto = await Repuesto.find({});
+    } else if (req.query.tipo === "Motos") {
+      elementoProducto = await Moto.find({});
+    } else {
+      throw new Error("No existe este producto.");
     }
+    res.status(200).json(elementoProducto).send();
+  } catch (error) {
+    res.status(400).send();
+  }
 });
 
 app.post("/eliminarProducto", async (req, res) => {
-    try {
-        if (!estaAutorizado(req)) throw new Error("no estas autorizado");
+  try {
+    if (!estaAutorizado(req)) throw new Error("No estas autorizado.");
 
-        if (req.body["tipo"] === "Repuestos") {
-            Repuesto.deleteOne(
-                { "Código de parte": req.body["datos"]["Código de parte"] },
-                function (err, res) {
-                    if (err) {
-                        res.status(400)
-                            .json("Ocurrio un error al eliminar el producto")
-                            .send();
-                    }
-                }
-            );
-        } else if (req.body["tipo"] === "Motos") {
-            Moto.deleteOne(
-                {
-                    Nombre: req.body["datos"]["Nombre"],
-                    Modelo: req.body["datos"]["Modelo"],
-                },
-                function (err, res) {
-                    if (err) {
-                        res.status(400)
-                            .json("Ocurrio un error al eliminar el producto")
-                            .send();
-                    }
-                }
-            );
+    if (req.body["tipo"] === "Repuestos") {
+      Repuesto.deleteOne(
+        { "Código de parte": req.body["datos"]["Código de parte"] },
+        function (err, res) {
+          if (err) {
+            res
+              .status(400)
+              .json("Ocurrio un error al eliminar el producto")
+              .send();
+          }
         }
-        res.status(200).json("Eliminado").send();
-    } catch (error) {
-        res.status(400).send();
+      );
+    } else if (req.body["tipo"] === "Motos") {
+      Moto.deleteOne(
+        {
+          Nombre: req.body["datos"]["Nombre"],
+          Modelo: req.body["datos"]["Modelo"],
+        },
+        function (err, res) {
+          if (err) {
+            res
+              .status(400)
+              .json("Ocurrio un error al eliminar el producto")
+              .send();
+          }
+        }
+      );
     }
+    res.status(200).json("Eliminado").send();
+  } catch (error) {
+    res.status(400).send();
+  }
 });
 
 app.post("/suspensionProducto", async (req, res) => {
-    try {
-        if (!estaAutorizado(req)) throw new Error("no estas autorizado");
+  try {
+    if (!estaAutorizado(req)) throw new Error("No estas autorizado.");
 
-        if (req.body["tipo"] === "Repuestos") {
-            Repuesto.findOneAndUpdate(
-                { "Código de parte": req.body["datos"]["Código de parte"] },
-                {
-                    Suspendido: !req.body["datos"]["Suspendido"],
-                },
-                function (err) {
-                    if (err) {
-                        res.status(400).json("Ocurrio un error").send();
-                    }
-                }
-            );
-        } else if (req.body["tipo"] === "Motos") {
-            Moto.updateOne(
-                {
-                    Nombre: req.body["datos"]["Nombre"],
-                    Modelo: req.body["datos"]["Modelo"],
-                },
-                {
-                    Suspendido: !req.body["datos"]["Suspendido"],
-                },
-                function (err, res) {
-                    if (err) {
-                        res.status(400).json("Ocurrio un error").send();
-                    }
-                }
-            );
+    if (req.body["tipo"] === "Repuestos") {
+      Repuesto.findOneAndUpdate(
+        { "Código de parte": req.body["datos"]["Código de parte"] },
+        {
+          Suspendido: !req.body["datos"]["Suspendido"],
+        },
+        function (err) {
+          if (err) {
+            res.status(400).json("Ocurrio un error").send();
+          }
         }
-        res.status(200).json("Hecho").send();
-    } catch (error) {
-        res.status(400).send();
+      );
+    } else if (req.body["tipo"] === "Motos") {
+      Moto.updateOne(
+        {
+          Nombre: req.body["datos"]["Nombre"],
+          Modelo: req.body["datos"]["Modelo"],
+        },
+        {
+          Suspendido: !req.body["datos"]["Suspendido"],
+        },
+        function (err, res) {
+          if (err) {
+            res.status(400).json("Ocurrio un error").send();
+          }
+        }
+      );
     }
+    res.status(200).json("Hecho").send();
+  } catch (error) {
+    res.status(400).send();
+  }
 });
 
 app.post("/agregacionMasivaProducto", async (req, res) => {
-    let sesion = await mongoose.startSession();
-    sesion.startTransaction();
-    try {
-        if (!estaAutorizado(req)) throw new Error("no estas autorizado");
+  let sesion = await mongoose.startSession();
+  sesion.startTransaction();
+  try {
+    if (!estaAutorizado(req)) throw new Error("No estás autorizado.");
 
-        if (req.body["tipo"] === "Repuestos") {
-            await Repuesto.insertMany(req.body["datos"], { sesion });
-        } else if (req.body["tipo"] === "Motos") {
-            await Moto.insertMany(req.body["datos"], { sesion });
-        }
-
-        await sesion.commitTransaction();
-        res.status(200).json("Hecho").send();
-    } catch (error) {
-        console.log(error);
-        await sesion.abortTransaction();
-        res.status(400).send();
-    } finally {
-        await sesion.endSession();
+    if (req.body["tipo"] === "Repuestos") {
+      await Repuesto.insertMany(req.body["datos"], { sesion });
+    } else if (req.body["tipo"] === "Motos") {
+      await Moto.insertMany(req.body["datos"], { sesion });
     }
+
+    await sesion.commitTransaction();
+    res.status(200).json("Hecho").send();
+  } catch (error) {
+    await sesion.abortTransaction();
+    if (error instanceof mongoose.Error.ValidationError) {
+      // Error de existencia de campos invalidos o vacios
+      res.status(400).json("Error de validacion").send();
+    } else if ((error.code = 11000)) {
+      // existe algun producto que se esta cargando con codigo igual a otro
+      res.status(400).json("Codigo duplicado").send();
+    } else {
+      // otros errores
+      res.status(400).send("Otro error");
+    }
+  } finally {
+    await sesion.endSession();
+  }
 });
 
 app.post("/editarProducto", async (req, res) => {
-    try {
-        if (!estaAutorizado(req)) throw new Error("no estas autorizado");
+  try {
+    if (!estaAutorizado(req)) throw new Error("No estas autorizado.");
 
-        const nuevosDatos =  func.aplanar(req.body["datos"]);
-        if (req.body["tipo"] === "Repuestos") {
-            Repuesto.findOneAndUpdate(
-                { "Código de parte": nuevosDatos["Código de parte"] },
-                nuevosDatos,
-                function (err) {
-                    if (err) {
-                        res.status(400).json("Ocurrio un error").send();
-                    }
-                }
-            );
-        } else if (req.body["tipo"] === "Motos") {
-            Moto.updateOne(
-                {
-                    Nombre: nuevosDatos["Nombre"],
-                    Modelo: nuevosDatos["Modelo"],
-                },
-                nuevosDatos,
-                function (err, res) {
-                    if (err) {
-                        res.status(400).json("Ocurrio un error").send();
-                    }
-                }
-            );
+    const nuevosDatos = func.aplanar(req.body["datos"]);
+    if (req.body["tipo"] === "Repuestos") {
+      Repuesto.findOneAndUpdate(
+        { "Código de parte": nuevosDatos["Código de parte"] },
+        nuevosDatos,
+        function (err) {
+          if (err) {
+            res.status(400).json("Ocurrio un error").send();
+          }
         }
-        res.status(200).json("Hecho").send();
-    } catch (error) {
-        res.status(400).send();
+      );
+    } else if (req.body["tipo"] === "Motos") {
+      Moto.updateOne(
+        {
+          Nombre: nuevosDatos["Nombre"],
+          Modelo: nuevosDatos["Modelo"],
+        },
+        nuevosDatos,
+        function (err, res) {
+          if (err) {
+            res.status(400).json("Ocurrio un error").send();
+          }
+        }
+      );
     }
+    res.status(200).json("Hecho").send();
+  } catch (error) {
+    res.status(400).send();
+  }
 });
 
 //////////////////////////////////////////////////////////////
@@ -303,5 +318,5 @@ app.post("/editarProducto", async (req, res) => {
 //////////////////////////////////////////////////////////////
 
 app.listen(5000, () => {
-    console.log("Servidor Iniciado");
+  console.log("Servidor Iniciado");
 });
