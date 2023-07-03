@@ -16,7 +16,7 @@ const jwt = require("jsonwebtoken");
 //////////////////////////////////////////////////////////////
 
 app.use(express.json());
-app.use(cors({origin:"http://localhost:3000", credentials:true}));
+app.use(cors({ origin: "http://localhost:3000", credentials: true }));
 app.set("view engine", "ejs");
 app.use(express.urlencoded({ extended: false }));
 app.use(cp());
@@ -57,21 +57,23 @@ const estaAutorizado = (req) => {
     if (!req.cookies.JWT) {
         return false;
     }
-    
-    try {
-        const verificacionToken = jwt.verify(req.cookies.JWT, "EmpanadaDeJamonYQueso");
-        if (!verificacionToken) {
 
+    try {
+        const verificacionToken = jwt.verify(
+            req.cookies.JWT,
+            "EmpanadaDeJamonYQueso"
+        );
+        if (!verificacionToken) {
             return false;
         }
     } catch (e) {
         console.log(e);
         return false;
     }
-    
-    req.payload = jwt.decode(req.cookies.JWT, "EmpanadaDeJamonYQueso")
+
+    req.payload = jwt.decode(req.cookies.JWT, "EmpanadaDeJamonYQueso");
     return true;
-}
+};
 
 //////////////////////////////////////////////////////////////
 // Rutas de autenticacion
@@ -79,42 +81,51 @@ const estaAutorizado = (req) => {
 
 app.post("/iniciar-sesion", async (req, res) => {
     try {
-        const usuario = await Usuario.findOne({Usuario: req.body.Usuario});
+        const usuario = await Usuario.findOne({ Usuario: req.body.Usuario });
         if (!usuario) {
-            res.status(400).json({error: "El usuario no existe"}).send();
+            res.status(400).json({ error: "El usuario no existe" }).send();
             return;
         }
-    
-        const comparacionContraseñas = await bcrypt.compare(atob(req.body.Contraseña), usuario.Contraseña);
-        
+
+        const comparacionContraseñas = await bcrypt.compare(
+            atob(req.body.Contraseña),
+            usuario.Contraseña
+        );
+
         if (!comparacionContraseñas) {
-            res.status(400).json({error:"La contraseña no es correcta"}).send();
-            return;  
+            res.status(400)
+                .json({ error: "La contraseña no es correcta" })
+                .send();
+            return;
         }
 
-        const contenido = {Usuario: usuario.Usuario};
-        const token = jwt.sign(contenido,"EmpanadaDeJamonYQueso");
-    
-        res.cookie("JWT",token,{httpOnly:true, maxAge:24*60*60*1000}).send();
+        const contenido = { Usuario: usuario.Usuario };
+        const token = jwt.sign(contenido, "EmpanadaDeJamonYQueso");
 
+        res.cookie("JWT", token, {
+            httpOnly: true,
+            maxAge: 24 * 60 * 60 * 1000,
+        }).send();
     } catch {
-        res.status(400).json({error:"ha ocurrido un error al procesar su solicitud"});
+        res.status(400).json({
+            error: "ha ocurrido un error al procesar su solicitud",
+        });
     }
-})
+});
 
-app.get("/cerrar-sesion" , (req, res) => {
+app.get("/cerrar-sesion", (req, res) => {
     res.clearCookie("JWT");
     res.send();
     return;
-})
+});
 
-app.get("/comprobar-sesion", async (req,res) => {
+app.get("/comprobar-sesion", async (req, res) => {
     if (estaAutorizado(req)) {
         res.status(200).send();
     } else {
         res.clearCookie("JWT").status(400).send();
     }
-})
+});
 
 //////////////////////////////////////////////////////////////
 // Rutas para trabajar con los productos de la base de datos
@@ -122,8 +133,7 @@ app.get("/comprobar-sesion", async (req,res) => {
 
 app.post("/register", async (req, res) => {
     try {
-        if (!estaAutorizado(req)) 
-            throw new Error("no estas autorizado");
+        if (!estaAutorizado(req)) throw new Error("no estas autorizado");
 
         if (req.body["tipo"] === "Repuestos") {
             await Repuesto.create(req.body["form"]["Información Basica"]);
@@ -140,8 +150,7 @@ app.post("/register", async (req, res) => {
 
 app.get("/obtenerProductos", async (req, res) => {
     try {
-        if (!estaAutorizado(req)) 
-            throw new Error("no estas autorizado");
+        if (!estaAutorizado(req)) throw new Error("no estas autorizado");
 
         let elementoProducto = [];
         if (req.query.tipo === "Repuestos") {
@@ -159,8 +168,7 @@ app.get("/obtenerProductos", async (req, res) => {
 
 app.post("/eliminarProducto", async (req, res) => {
     try {
-        if (!estaAutorizado(req)) 
-            throw new Error("no estas autorizado");
+        if (!estaAutorizado(req)) throw new Error("no estas autorizado");
 
         if (req.body["tipo"] === "Repuestos") {
             Repuesto.deleteOne(
@@ -196,8 +204,7 @@ app.post("/eliminarProducto", async (req, res) => {
 
 app.post("/suspensionProducto", async (req, res) => {
     try {
-        if (!estaAutorizado(req)) 
-            throw new Error("no estas autorizado");
+        if (!estaAutorizado(req)) throw new Error("no estas autorizado");
 
         if (req.body["tipo"] === "Repuestos") {
             Repuesto.findOneAndUpdate(
@@ -237,8 +244,7 @@ app.post("/agregacionMasivaProducto", async (req, res) => {
     let sesion = await mongoose.startSession();
     sesion.startTransaction();
     try {
-        if (!estaAutorizado(req)) 
-            throw new Error("no estas autorizado");
+        if (!estaAutorizado(req)) throw new Error("no estas autorizado");
 
         if (req.body["tipo"] === "Repuestos") {
             await Repuesto.insertMany(req.body["datos"], { sesion });
@@ -254,6 +260,41 @@ app.post("/agregacionMasivaProducto", async (req, res) => {
         res.status(400).send();
     } finally {
         await sesion.endSession();
+    }
+});
+
+app.post("/editarProducto", async (req, res) => {
+    try {
+        if (!estaAutorizado(req)) throw new Error("no estas autorizado");
+
+        const nuevosDatos =  func.aplanar(req.body["datos"]);
+        if (req.body["tipo"] === "Repuestos") {
+            Repuesto.findOneAndUpdate(
+                { "Código de parte": nuevosDatos["Código de parte"] },
+                nuevosDatos,
+                function (err) {
+                    if (err) {
+                        res.status(400).json("Ocurrio un error").send();
+                    }
+                }
+            );
+        } else if (req.body["tipo"] === "Motos") {
+            Moto.updateOne(
+                {
+                    Nombre: nuevosDatos["Nombre"],
+                    Modelo: nuevosDatos["Modelo"],
+                },
+                nuevosDatos,
+                function (err, res) {
+                    if (err) {
+                        res.status(400).json("Ocurrio un error").send();
+                    }
+                }
+            );
+        }
+        res.status(200).json("Hecho").send();
+    } catch (error) {
+        res.status(400).send();
     }
 });
 
