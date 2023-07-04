@@ -8,6 +8,15 @@ import { useGlobalAlert } from "../../hooks/useGlobalAlert";
 import "./ComponenteArrastre.css";
 import { peticionAgregacionMasivaProducto } from "../../Utilidades/FetchApis/PeticionesBD";
 
+/**
+ * Componente de arrastre de archivos.
+ *
+ * @param {boolean} abierto - Indica si el componente está abierto.
+ * @param {function} setAbierto - Función para controlar el estado de abierto/cerrado del componente.
+ * @param {string} tipoProducto - Tipo de producto asociado al archivo.
+ * @param {function} obtenerProductos - Función para obtener los productos.
+ * @returns {JSX.Element} Componente JSX de arrastre de archivos.
+ */
 function ComponenteArrastre({
   abierto,
   setAbierto,

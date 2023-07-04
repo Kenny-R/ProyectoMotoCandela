@@ -12,6 +12,16 @@ import {
 import { useGlobalAlert } from "../../hooks/useGlobalAlert";
 import { peticionEliminarProducto } from "../../Utilidades/FetchApis/PeticionesBD";
 
+/**
+ * Componente de modal para eliminar un producto.
+ *
+ * @param {boolean} abierto - Indica si el modal está abierto.
+ * @param {function} setAbierto - Función para controlar el estado de abierto/cerrado del modal.
+ * @param {boolean} motos - Indica si el producto es una moto.
+ * @param {object} producto - El producto a eliminar.
+ * @param {function} obtenerProductos - Función para obtener los productos.
+ * @returns {JSX.Element} Componente JSX del modal de eliminación.
+ */
 const ModalEliminar = ({
   abierto,
   setAbierto,
@@ -24,6 +34,11 @@ const ModalEliminar = ({
 
   const tipo_producto = motos ? "la moto" : "el repuesto";
 
+  /**
+   * Elimina el producto de la base de datos.
+   *
+   * @returns {Promise<void>} Promesa que se resuelve cuando se elimina correctamente el producto.
+   */
   const eliminarProducto = async () => {
     try {
       const respuesta = await peticionEliminarProducto(

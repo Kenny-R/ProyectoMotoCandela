@@ -10,46 +10,46 @@ import GlobalAlert from "./componentes/GlobalAlert";
 import RequiereAutorizacion from "./componentes/autorizacion/RequiereAutorizacion";
 
 function App() {
-    return (
-        <>
-            <GlobalAlert />
-            <Routes>
-                {/*Paginas Publicas*/}
-                <Route path="/" element={<IniciarSesion />} />
+  return (
+    <>
+      <GlobalAlert />
+      <Routes>
+        {/*Paginas Publicas*/}
+        <Route path="/" element={<IniciarSesion />} />
 
-                {/*Paginas privadas*/}
-                <Route element={<RequiereAutorizacion />}>
-                    <Route
-                        path="/motos"
-                        element={
-                            <BarraLateral>
-                                <Motos />
-                            </BarraLateral>
-                        }
-                    />
+        {/*Paginas privadas*/}
+        <Route element={<RequiereAutorizacion />}>
+          <Route
+            path="/motos"
+            element={
+              <BarraLateral>
+                <Motos />
+              </BarraLateral>
+            }
+          />
 
-                    <Route
-                        path="/repuestos"
-                        element={
-                            <BarraLateral>
-                                <Repuestos />
-                            </BarraLateral>
-                        }
-                    />
-                </Route>
+          <Route
+            path="/repuestos"
+            element={
+              <BarraLateral>
+                <Repuestos />
+              </BarraLateral>
+            }
+          />
+        </Route>
 
-                {/*Otras*/}
-                <Route
-                    path="*"
-                    element={
-                        <BarraLateral>
-                            <NoEncontrado />
-                        </BarraLateral>
-                    }
-                />
-            </Routes>
-        </>
-    );
+        {/*Otras*/}
+        <Route
+          path="*"
+          element={
+            <BarraLateral>
+              <NoEncontrado />
+            </BarraLateral>
+          }
+        />
+      </Routes>
+    </>
+  );
 }
 
 export default App;

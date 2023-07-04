@@ -1,5 +1,7 @@
 /**
- * Toma un json de dos niveles 
+ * Toma un JSON de dos niveles y lo aplana en un solo nivel.
+ * @param {Object} ob - El objeto JSON a aplanar.
+ * @returns {Object} - El objeto JSON aplanado.
  */
 const aplanar = (ob) => {
   let resultado = {};

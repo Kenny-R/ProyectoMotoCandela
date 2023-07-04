@@ -7,6 +7,14 @@ import { FaLock, FaLockOpen } from "react-icons/fa";
 import { peticionSuspensionProducto } from "../../Utilidades/FetchApis/PeticionesBD";
 import { useGlobalAlert } from "../../hooks/useGlobalAlert";
 
+/**
+ * Componente que muestra las acciones disponibles para un producto.
+ * @param {boolean} motos - Indica si el producto es una motocicleta.
+ * @param {Object} producto - Información del producto.
+ * @param {Function} obtenerProductos - Función para obtener la lista de productos actualizada.
+ * @param {Object} productoClasificado - Información clasificada del producto.
+ * @returns {JSX.Element} El componente de acciones del producto.
+ */
 const Acciones = ({
   motos,
   producto,
@@ -18,16 +26,25 @@ const Acciones = ({
   const [modificar, setModificar] = useState(false);
   const [eliminar, setEliminar] = useState(false);
 
+  /**
+   * Maneja el evento de modificar el producto.
+   */
   const manejarModificarProducto = () => {
     console.log(productoClasificado);
     setModificar(true);
   };
 
+  /**
+   * Maneja el evento de eliminar el producto.
+   */
   const manejarEliminarProducto = () => {
     console.log(producto);
     setEliminar(true);
   };
 
+  /**
+   * Realiza la suspensión o levantamiento de suspensión del producto.
+   */
   const suspensionProducto = async () => {
     try {
       const respuesta = await peticionSuspensionProducto(
@@ -60,6 +77,9 @@ const Acciones = ({
     }
   };
 
+  /**
+   * Maneja el evento de suspender o levantar suspensión del producto.
+   */
   const manejarSuspender = () => {
     suspensionProducto();
     if (suspender) {

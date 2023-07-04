@@ -10,6 +10,15 @@ import {
   obtenerClases,
 } from "../../Utilidades/funciones/funcionesAplanarDatos";
 
+/**
+ * Función que crea un objeto de datos para un repuesto.
+ *
+ * @param {string} nombre - El nombre del repuesto.
+ * @param {string} codigo - El código de parte del repuesto.
+ * @param {string} modelo - El modelo del repuesto.
+ * @param {React.Component} acciones - Componente de acciones para el repuesto.
+ * @returns {object} - Objeto de datos para el repuesto.
+ */
 function crearDatos(nombre, codigo, modelo, acciones) {
   return {
     Nombre: nombre,
@@ -21,10 +30,16 @@ function crearDatos(nombre, codigo, modelo, acciones) {
 
 const columnas = ["Nombre", "Código de parte", "Modelo", "Acciones"];
 
+/**
+ * Componente de la página de Repuestos.
+ */
 const Repuestos = () => {
   const [datos, setDatos] = useState([]);
   const [cargando, setCargando] = useState(true);
 
+  /**
+   * Función asincrónica que obtiene los repuestos de la base de datos.
+   */
   const obtenerRepuestos = async () => {
     setCargando(true);
     try {

@@ -23,6 +23,19 @@ import { useGlobalAlert } from "../../hooks/useGlobalAlert";
 import { validacionCamposVacios } from "../../Utilidades/validacionCamposVacios";
 import { peticionRegistrarProducto } from "../../Utilidades/FetchApis/PeticionesBD";
 
+/**
+ * Renderiza los pasos y campos del formulario en el modal.
+ *
+ * @param {number} pasoActivo - El paso activo actual.
+ * @param {object} campos - Los campos del formulario organizados por categoría.
+ * @param {object} estadoForm - El estado actual del formulario.
+ * @param {function} manejarCambiarDato - Función para manejar el cambio de datos en el formulario.
+ * @param {function} siguientePaso - Función para avanzar al siguiente paso.
+ * @param {function} pasoAnterior - Función para retroceder al paso anterior.
+ * @param {function} reiniciarPasos - Función para reiniciar los pasos del formulario.
+ * @param {function} finalizar - Función para finalizar el formulario.
+ * @returns {JSX.Element} Componente JSX que muestra los pasos y campos del formulario.
+ */
 const pasos = (
   pasoActivo,
   campos,
@@ -114,6 +127,12 @@ const pasos = (
   );
 };
 
+/**
+ * Obtiene los nombres de las categorías de los campos.
+ *
+ * @param {object} campos - Los campos del formulario organizados por categoría.
+ * @returns {string[]} Array con los nombres de las categorías.
+ */
 const nombresPasos = (campos) => {
   const nombres = [];
 
@@ -124,6 +143,17 @@ const nombresPasos = (campos) => {
   return nombres;
 };
 
+/**
+ * Componente de modal para agregar o modificar productos.
+ *
+ * @param {boolean} abierto - Indica si el modal está abierto.
+ * @param {function} setAbierto - Función para controlar el estado de abierto/cerrado del modal.
+ * @param {boolean} crear - Indica si se está creando un nuevo producto.
+ * @param {object} campos - Los campos del formulario organizados por categoría.
+ * @param {string} tipoProducto - El tipo de producto.
+ * @param {function} obtenerProductos - Función para obtener los productos.
+ * @returns {JSX.Element} Componente JSX del modal.
+ */
 const PlantillaModal = ({
   abierto,
   setAbierto,

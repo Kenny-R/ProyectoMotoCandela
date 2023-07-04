@@ -9,6 +9,14 @@ import {
   obtenerClases,
 } from "../../Utilidades/funciones/funcionesAplanarDatos";
 
+/**
+ * Función que crea un objeto de datos para una moto.
+ *
+ * @param {string} nombre - El nombre de la moto.
+ * @param {string} modelo - El modelo de la moto.
+ * @param {React.Component} acciones - Componente de acciones para la moto.
+ * @returns {object} - Objeto de datos para la moto.
+ */
 function crearDatos(nombre, modelo, acciones) {
   return {
     Nombre: nombre,
@@ -19,10 +27,16 @@ function crearDatos(nombre, modelo, acciones) {
 
 const columnas = ["Nombre", "Modelo", "Acciones"];
 
+/**
+ * Componente de la página de Motos.
+ */
 const Motos = () => {
   const [datos, setDatos] = useState([]);
   const [cargando, setCargando] = useState(true);
 
+  /**
+   * Función asincrónica que obtiene las motos de la base de datos.
+   */
   const obtenerMotos = async () => {
     try {
       setCargando(true);

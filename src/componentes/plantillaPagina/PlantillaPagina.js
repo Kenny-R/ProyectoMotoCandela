@@ -8,6 +8,18 @@ import ModalCargaMasiva from "./ModalCargaMasiva";
 import FiltroTabla from "./FiltroTabla";
 import SyncLoader from "react-spinners/SyncLoader";
 
+/**
+ * Componente de plantilla de página.
+ *
+ * @param {string} nombreLista - Nombre de la lista.
+ * @param {array} filas - Filas de datos.
+ * @param {array} columnas - Columnas de la tabla.
+ * @param {array} camposModal - Campos del modal.
+ * @param {string} tipoProducto - Tipo de producto asociado.
+ * @param {function} obtenerProductos - Función para obtener los productos.
+ * @param {boolean} cargando - Indica si se está cargando información.
+ * @returns {JSX.Element} Componente JSX de plantilla de página.
+ */
 const PlantillaPagina = ({
   nombreLista,
   filas,
@@ -26,10 +38,16 @@ const PlantillaPagina = ({
     setFilasFiltradas(filas);
   }, [filas]);
 
+  /**
+   * Maneja el evento de agregar un producto.
+   */
   const manejarAgregarProducto = () => {
     setAgregar(true);
   };
 
+  /**
+   * Maneja el evento de carga masiva.
+   */
   const manejarCargaMasiva = () => {
     setModalCargaMasiva(!modalCargaMasiva);
   };

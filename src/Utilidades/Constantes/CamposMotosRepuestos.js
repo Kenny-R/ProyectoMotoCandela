@@ -1,3 +1,6 @@
+/**
+ * Campos predefinidos para la información básica de una motocicleta.
+ */
 const CamposMotos = {
   "Informacion Basica": {
     Nombre: "",
@@ -42,6 +45,9 @@ const CamposMotos = {
   },
 };
 
+/**
+ * Campos predefinidos para la información básica de un repuesto.
+ */
 const CamposRepuestos = {
   "Información Basica": {
     Nombre: "",

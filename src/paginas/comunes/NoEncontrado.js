@@ -1,5 +1,8 @@
 import React from "react";
 
+/**
+ * Componente para mostrar un mensaje de error 404.
+ */
 const NoEncontrado = () => {
   return (
     <>

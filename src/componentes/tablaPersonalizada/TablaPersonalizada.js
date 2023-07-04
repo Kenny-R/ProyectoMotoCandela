@@ -11,6 +11,14 @@ import {
 import CeldaTablaConEstilo from "../celdaTablaConEstilo/CeldaTablaConEstilo";
 import FilasTablaConEstilo from "../filasTablaConEstilo/FilasTablaConEstilo";
 
+/**
+ * Componente de tabla personalizada.
+ *
+ * @param {object} props - Propiedades del componente.
+ * @param {array} props.filas - Filas de datos.
+ * @param {array} props.columnas - Columnas de la tabla.
+ * @returns {JSX.Element} Componente JSX de tabla personalizada.
+ */
 const TablaPersonalizada = (props) => {
   const [pagina, setPagina] = useState(0);
   const [filasPorPagina, setFilasPorPagina] = useState(5);
@@ -19,6 +27,12 @@ const TablaPersonalizada = (props) => {
     setPagina(0);
   }, [props.filas]);
 
+  /**
+   * Obtiene las filas visibles según la página y filas por página.
+   *
+   * @param {array} filas - Filas de datos.
+   * @returns {array} Filas visibles.
+   */
   const obtenerFilasVisibles = useCallback(
     (filas) => {
       if (filas == null) return null;
@@ -31,10 +45,21 @@ const TablaPersonalizada = (props) => {
 
   const filasAMostrar = obtenerFilasVisibles(props.filas);
 
+  /**
+   * Maneja el cambio de página.
+   *
+   * @param {object} event - Evento del cambio de página.
+   * @param {number} newPage - Nueva página.
+   */
   const cambioDePagina = (event, newPage) => {
     setPagina(newPage);
   };
 
+  /**
+   * Maneja el cambio de filas por página.
+   *
+   * @param {object} event - Evento del cambio de filas por página.
+   */
   const cambioFilasPorPagina = (event) => {
     setFilasPorPagina(parseInt(event.target.value, 10));
     setPagina(0);
