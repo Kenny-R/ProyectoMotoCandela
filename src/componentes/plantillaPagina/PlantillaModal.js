@@ -22,10 +22,13 @@ import { useGlobalAlert } from "../../hooks/useGlobalAlert";
 // funciones utiles
 import { validacionCamposVacios } from "../../Utilidades/validacionCamposVacios";
 import { peticionRegistrarProducto } from "../../Utilidades/FetchApis/PeticionesBD";
+import { camposFijosMotos, camposFijosRepuestos } from "../../Utilidades/Constantes/CamposSinEdicion";
+import TiposProductos from "../../Utilidades/Constantes/TiposProductos";
 
 /**
  * Renderiza los pasos y campos del formulario en el modal.
  *
+ * @param {string} tipoProducto - El tipo de producto de la vista actual.
  * @param {number} pasoActivo - El paso activo actual.
  * @param {object} campos - Los campos del formulario organizados por categoría.
  * @param {object} estadoForm - El estado actual del formulario.
@@ -34,9 +37,11 @@ import { peticionRegistrarProducto } from "../../Utilidades/FetchApis/Peticiones
  * @param {function} pasoAnterior - Función para retroceder al paso anterior.
  * @param {function} reiniciarPasos - Función para reiniciar los pasos del formulario.
  * @param {function} finalizar - Función para finalizar el formulario.
+ * @param {boolean} edicion - True si es modal de edicion, falso si es de creacion. 
  * @returns {JSX.Element} Componente JSX que muestra los pasos y campos del formulario.
  */
 const pasos = (
+  tipoProducto,
   pasoActivo,
   campos,
   estadoForm,
@@ -44,37 +49,53 @@ const pasos = (
   siguientePaso,
   pasoAnterior,
   reiniciarPasos,
-  finalizar
+  finalizar,
+  edicion,
 ) => {
   const pasosEtiquetas = [];
   const camposModal = [];
 
   for (let categoria in campos) {
-    const propsPasos = {};
-    const propsEtiq = {};
+    if (categoria !== "undefined") {
+      const propsPasos = {};
+      const propsEtiq = {};
 
-    pasosEtiquetas.push(
-      <Step key={categoria} {...propsPasos}>
-        <StepLabel {...propsEtiq}>{categoria}</StepLabel>
-      </Step>
-    );
+      pasosEtiquetas.push(
+        <Step key={categoria} {...propsPasos}>
+          <StepLabel {...propsEtiq}>{categoria}</StepLabel>
+        </Step>
+      );
 
-    camposModal.push([]);
-    for (let campo in campos[categoria]) {
-      if (campo !== "Suspendido") {
-        camposModal[camposModal.length - 1].push(
-          <Grid item xs={12} md={6} key={campo}>
-            <TextField
-              value={estadoForm[categoria][campo]}
-              onChange={(event) => {
-                manejarCambiarDato(categoria, campo, event.target.value);
-              }}
-              label={campo}
-              fullWidth
-              style={{ marginTop: "0.5rem" }}
-            />
-          </Grid>
-        );
+      camposModal.push([]);
+      for (let campo in campos[categoria]) {
+        let deshabilitar = false;
+        if (edicion) {
+          switch (tipoProducto) {
+            case TiposProductos.MOTOS:
+              deshabilitar = camposFijosMotos.some((c) => campo === c);
+              break;
+            case TiposProductos.REPUESTOS:
+              deshabilitar = camposFijosRepuestos.some((c) => campo === c);
+            default:
+              break;
+          }
+        }
+        if (campo !== "Suspendido") {
+          camposModal[camposModal.length - 1].push(
+            <Grid item xs={12} md={6} key={campo}>
+              <TextField
+                disabled={deshabilitar}
+                value={estadoForm[categoria][campo]}
+                onChange={(event) => {
+                  manejarCambiarDato(categoria, campo, event.target.value);
+                }}
+                label={campo}
+                fullWidth
+                style={{ marginTop: "0.5rem" }}
+              />
+            </Grid>
+          );
+        }
       }
     }
   }
@@ -255,6 +276,7 @@ const PlantillaModal = ({
 
         <DialogContent>
           {pasos(
+            tipoProducto,
             pasoActivo,
             campos,
             estadoForm,
@@ -262,7 +284,8 @@ const PlantillaModal = ({
             siguientePaso,
             pasoAnterior,
             reiniciarPasos,
-            finalizar
+            finalizar,
+            !crear
           )}
         </DialogContent>
         <DialogActions>
