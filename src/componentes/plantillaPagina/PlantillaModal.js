@@ -21,7 +21,7 @@ import { useGlobalAlert } from "../../hooks/useGlobalAlert";
 
 // funciones utiles
 import { validacionCamposVacios } from "../../Utilidades/validacionCamposVacios";
-import { peticionRegistrarProducto } from "../../Utilidades/FetchApis/PeticionesBD";
+import { peticionEditarProducto, peticionRegistrarProducto } from "../../Utilidades/FetchApis/PeticionesBD";
 import { camposFijosMotos, camposFijosRepuestos } from "../../Utilidades/Constantes/CamposSinEdicion";
 import TiposProductos from "../../Utilidades/Constantes/TiposProductos";
 
@@ -76,6 +76,7 @@ const pasos = (
               break;
             case TiposProductos.REPUESTOS:
               deshabilitar = camposFijosRepuestos.some((c) => campo === c);
+              break;
             default:
               break;
           }
@@ -183,13 +184,12 @@ const PlantillaModal = ({
   tipoProducto,
   obtenerProductos,
 }) => {
-  //form fields states
   const [estadoForm, setEstadoForm] = useState(campos);
   const [pasoActivo, setPasoActivo] = useState(0);
   const [final, setFinal] = useState(false);
   const categorias = nombresPasos(campos);
   const { popAlert } = useGlobalAlert();
-
+  
   const manejarCambiarDato = (categoria, campo, valor) => {
     setEstadoForm({
       ...estadoForm,
@@ -224,13 +224,13 @@ const PlantillaModal = ({
     setFinal(true);
   };
 
-  const handleSubmitDialog = async () => {
+  const manejarEnvioModal = async () => {
     try {
       const respuesta = crear
         ? await peticionRegistrarProducto(
             JSON.stringify({ tipo: tipoProducto, form: estadoForm })
           )
-        : null;
+        : await peticionEditarProducto(tipoProducto,estadoForm);
 
       const contenido = await respuesta.json();
       if (contenido === "Codigo duplicado") {
@@ -239,7 +239,9 @@ const PlantillaModal = ({
           "error"
         );
         return;
-      } else if (!respuesta.ok) {
+      } 
+      
+      if (!respuesta.ok) {
         popAlert("Hubo un error al cargar los datos.", "error");
         return;
       }
@@ -248,14 +250,14 @@ const PlantillaModal = ({
         `Producto ${crear ? "agregado" : "modificado"} adecuadamente`,
         "success"
       );
-
       obtenerProductos();
+      setAbierto(false);
+
     } catch (e) {
+      console.log(e)
       popAlert("Ocurrió un error de red.", "error");
       return;
     }
-
-    setAbierto(false);
   };
 
   return (
@@ -291,7 +293,7 @@ const PlantillaModal = ({
         <DialogActions>
           <Button onClick={() => setAbierto(false)}>Cancelar</Button>
           {final && (
-            <Button onClick={handleSubmitDialog} autoFocus>
+            <Button onClick={manejarEnvioModal} autoFocus>
               Aplicar
             </Button>
           )}

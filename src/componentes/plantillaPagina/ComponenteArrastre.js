@@ -1,4 +1,3 @@
-import React, { useState, useCallback } from "react";
 import { useDropzone } from "react-dropzone";
 import { Button } from "@mui/material";
 import { read, utils } from "xlsx";
@@ -23,10 +22,9 @@ function ComponenteArrastre({
   tipoProducto,
   obtenerProductos,
 }) {
-  const [data, setData] = useState([]);
   const { popAlert } = useGlobalAlert();
 
-  const { archivosAceptados, getRootProps } = useDropzone({
+  const { getRootProps } = useDropzone({
     accept: {
       "application/vnd.ms-excel": [".xls"],
       "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet": [
@@ -42,7 +40,6 @@ function ComponenteArrastre({
       }
 
       try {
-        console.log(tipoProducto);
         const archivoBuffer = await archivo.arrayBuffer();
         const libro = read(archivoBuffer);
         const primeraHoja = libro.Sheets[libro.SheetNames[0]];
@@ -60,16 +57,26 @@ function ComponenteArrastre({
             "error"
           );
           return;
-        } else if (contenido === "Error de validacion") {
+        } 
+        
+        if (contenido === "Error de validacion") {
           popAlert(
             "Hay campos inválidos o vacíos. Por favor, revise el archivo.",
             "error"
           );
           return;
-        } else if (!respuesta.ok) {
+        }
+        
+        if (!respuesta.ok) {
           popAlert("Hubo un error al cargar los datos.", "error");
           return;
         }
+        
+        popAlert("Se cargaron todos los datos satisfactoriamente.", "success");
+        obtenerProductos();
+        setAbierto(false);
+
+
       } catch (e) {
         console.log(e);
         popAlert("Hubo un error al cargar los datos.", "error");

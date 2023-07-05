@@ -9,13 +9,17 @@ import { tableCellClasses } from "@mui/material/TableCell";
  * return <CeldaTablaConEstilo>Contenido de la celda</CeldaTablaConEstilo>;
  */
 const CeldaTablaConEstilo = styled(TableCell)(({ theme }) => ({
-  [`&.${tableCellClasses.head}`]: {
-    backgroundColor: theme.palette.common.black,
-    color: theme.palette.common.white,
-  },
-  [`&.${tableCellClasses.body}`]: {
-    fontSize: 14,
-  },
+    [`&.${tableCellClasses.head}`]: {
+        backgroundColor: theme.palette.common.black,
+        color: theme.palette.common.white,
+    },
+    [`&.${tableCellClasses.body}`]: {
+        fontSize: 14,
+        maxWidth: "196px",
+        overflow: "hidden",
+        textOverflow: "ellipsis",
+        whiteSpace: "nowrap",
+    },
 }));
 
 export default CeldaTablaConEstilo;

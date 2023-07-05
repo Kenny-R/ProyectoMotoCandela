@@ -13,7 +13,6 @@ const RequiereAutorizacion = () => {
   const navigate = useNavigate();
   const [inicioSesion, setInicioSesion] = useState(false);
   useEffect(() => {
-    console.log("compobando si existe la sesion del usuario...");
     /**
      * Realiza una verificación de la sesión del usuario.
      * @returns {Promise<void>} Una promesa que resuelve cuando se completa la verificación de la sesión.

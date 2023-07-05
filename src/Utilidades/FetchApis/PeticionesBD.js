@@ -1,10 +1,14 @@
+//////////////////////////////////////////////////////////////
+// Peticiones para manejar los productos de la base de datos
+//////////////////////////////////////////////////////////////
+
 /**
  * Realiza una petición para almacenar un nuevo producto en la base de datos.
  * @param {string} body - Cadena JSON que contiene el tipo de producto y los datos del formulario.
  * @returns {Promise<Response>} - Promesa que resuelve en la respuesta de la petición.
  */
 export const peticionRegistrarProducto = async (body) => {
-  return fetch("http://localhost:5000/register", {
+  return fetch("http://localhost:5000/agregar-producto", {
     method: "POST",
     crossDomain: true,
     credentials: "include",
@@ -23,7 +27,7 @@ export const peticionRegistrarProducto = async (body) => {
  * @returns {Promise<Response>} - Promesa que resuelve en la respuesta de la petición.
  */
 export const peticionObtenerProductos = async (tipoProducto) => {
-  return fetch(`http://localhost:5000/obtenerProductos?tipo=${tipoProducto}`, {
+  return fetch(`http://localhost:5000/obtener-productos?tipo=${tipoProducto}`, {
     method: "GET",
     credentials: "include",
     headers: {
@@ -39,7 +43,7 @@ export const peticionObtenerProductos = async (tipoProducto) => {
  * @returns {Promise<Response>} - Promesa que resuelve en la respuesta de la petición.
  */
 export const peticionEliminarProducto = async (tipoProducto, datos) => {
-  return fetch("http://localhost:5000/eliminarProducto", {
+  return fetch("http://localhost:5000/eliminar-producto", {
     method: "POST",
     crossDomain: true,
     credentials: "include",
@@ -59,7 +63,7 @@ export const peticionEliminarProducto = async (tipoProducto, datos) => {
  * @returns {Promise<Response>} - Promesa que resuelve en la respuesta de la petición.
  */
 export const peticionSuspensionProducto = async (tipoProducto, datos) => {
-  return fetch("http://localhost:5000/suspensionProducto", {
+  return fetch("http://localhost:5000/suspension-producto", {
     method: "POST",
     crossDomain: true,
     credentials: "include",
@@ -79,7 +83,7 @@ export const peticionSuspensionProducto = async (tipoProducto, datos) => {
  * @returns {Promise<Response>} - Promesa que resuelve en la respuesta de la petición.
  */
 export const peticionAgregacionMasivaProducto = async (tipoProducto, datos) => {
-  return fetch("http://localhost:5000/agregacionMasivaProducto", {
+  return fetch("http://localhost:5000/agregacion-masiva-producto", {
     method: "POST",
     crossDomain: true,
     credentials: "include",
@@ -92,6 +96,29 @@ export const peticionAgregacionMasivaProducto = async (tipoProducto, datos) => {
   });
 };
 
+/**
+ * Realiza una petición para editar todos los detalles de un producto
+ * @param {string} tipoProducto - Tipo de producto al que pertenece el producto a suspender.
+ * @param {object} datos - Datos del producto a suspender.
+ * @returns {Promise<Response>} - Promesa que resuelve en la respuesta de la petición.
+ */
+export const peticionEditarProducto = async (tipoProducto, datos) => {
+  return fetch("http://localhost:5000/editar-producto", {
+    method: "POST",
+    crossDomain: true,
+    credentials: "include",
+    headers: {
+      "Content-Type": "application/json",
+      Accept: "application/json",
+      "Access-Control-Allow-Origin": "http://localhost:5000",
+    },
+    body: JSON.stringify({ tipo: tipoProducto, datos: datos }),
+  });
+};
+
+//////////////////////////////////////////////////////////////
+// Peticiones para manejo de la sesion
+//////////////////////////////////////////////////////////////
 /**
  * Realiza una petición para verificar la sesión del usuario.
  * @returns {Promise<Response>} - Promesa que resuelve en la respuesta de la petición.

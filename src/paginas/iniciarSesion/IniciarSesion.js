@@ -7,6 +7,7 @@ import {
   iniciarSesion,
 } from "../../Utilidades/FetchApis/PeticionesBD";
 import { useLocation, useNavigate } from "react-router-dom";
+import { useGlobalAlert } from "../../hooks/useGlobalAlert";
 
 /**
  * Componente de Inicio de Sesión.
@@ -16,6 +17,7 @@ const IniciarSesion = () => {
   const [contraseha, setContraseha] = useState("");
   const navigate = useNavigate();
   const location = useLocation();
+  const { popAlert } = useGlobalAlert(); 
 
   useEffect(() => {
     /**
@@ -25,7 +27,7 @@ const IniciarSesion = () => {
       try {
         const respuesta = await chequearSesion();
         if (!respuesta.ok) {
-          throw new Error("problemas con la conexion al servidor");
+          return;
         }
         navigate("/motos", {
           state: { from: location },
@@ -42,7 +44,7 @@ const IniciarSesion = () => {
   /**
    * Función que maneja el envío del formulario de inicio de sesión.
    */
-  const handleSubmit = async () => {
+  const manejarEnvio = async () => {
     if (usuario && contraseha) {
       try {
         const contraseñaEncriptada = btoa(contraseha);
@@ -51,19 +53,20 @@ const IniciarSesion = () => {
           Contraseña: contraseñaEncriptada,
         });
         if (!respuesta.ok) {
-          throw new Error("No puedes iniciar sesion");
+          popAlert("Credenciales invalidas","error");
+          return;
         }
-        console.log(respuesta);
+        
         navigate("/motos", {
           state: { from: location },
           replace: true,
         });
       } catch (e) {
         console.log(e);
+      } finally{
+        setUsuario("");
+        setContraseha("");
       }
-      console.log({ usuario: usuario, contraseha: contraseha });
-      setUsuario("");
-      setContraseha("");
     }
   };
 
@@ -113,7 +116,7 @@ const IniciarSesion = () => {
           />
 
           <BotonIniciarSesion
-            onClick={handleSubmit}
+            onClick={manejarEnvio}
             variant="contained"
             fullWidth
             sx={{

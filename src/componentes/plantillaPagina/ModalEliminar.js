@@ -1,4 +1,3 @@
-import React, { useEffect, useState } from "react";
 import {
   Button,
   Dialog,
@@ -30,7 +29,6 @@ const ModalEliminar = ({
   obtenerProductos,
 }) => {
   const { popAlert } = useGlobalAlert();
-  const [eliminado, setEliminado] = useState(false);
 
   const tipo_producto = motos ? "la moto" : "el repuesto";
 
@@ -55,7 +53,6 @@ const ModalEliminar = ({
       popAlert("Se eliminó correctamente el producto.", "success");
       const contenido = await respuesta.json();
       if (contenido === "Eliminado") {
-        setEliminado(true);
         obtenerProductos();
       }
     } catch (err) {
