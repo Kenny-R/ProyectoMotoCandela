@@ -5,6 +5,7 @@ const CamposMotos = {
   "Informacion Basica": {
     Nombre: "",
     Modelo: "",
+    "Categoría": "",
     Arranque: "",
     Embrague: "",
     Chasis: "",
