@@ -4,6 +4,7 @@ const mongoose = require("mongoose");
 let esquema = {
   Nombre: { type: String, required: true },
   Modelo: { type: String, required: true },
+  "Categoría": { type: String, required: true },
   Arranque: { type: String, required: true },
   Embrague: { type: String, required: true },
   Chasis: { type: String, required: true },

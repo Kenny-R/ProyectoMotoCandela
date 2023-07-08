@@ -18,6 +18,7 @@ import SyncLoader from "react-spinners/SyncLoader";
  * @param {string} tipoProducto - Tipo de producto asociado.
  * @param {function} obtenerProductos - Función para obtener los productos.
  * @param {boolean} cargando - Indica si se está cargando información.
+ * @param {array} columnasAFiltrar - Las columnas por las cuales se permitira filtrar.
  * @returns {JSX.Element} Componente JSX de plantilla de página.
  */
 const PlantillaPagina = ({
@@ -28,11 +29,11 @@ const PlantillaPagina = ({
     tipoProducto,
     obtenerProductos,
     cargando,
+    columnasAFiltrar
 }) => {
     const [agregar, setAgregar] = useState(false);
     const [modalCargaMasiva, setModalCargaMasiva] = useState(false);
     const [filasFiltradas, setFilasFiltradas] = useState(filas);
-    const columnasAFiltrar = [columnas[0], columnas[1]];
 
     useEffect(() => {
         setFilasFiltradas(filas);

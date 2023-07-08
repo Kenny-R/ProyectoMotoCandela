@@ -89,6 +89,7 @@ const Repuestos = () => {
         tipoProducto={"Repuestos"}
         obtenerProductos={obtenerRepuestos}
         cargando={cargando}
+        columnasAFiltrar={[columnas[0], columnas[1]]}
       />
     </>
   );
