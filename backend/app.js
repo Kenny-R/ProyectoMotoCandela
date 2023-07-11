@@ -2,6 +2,7 @@
 // Dependencias
 //////////////////////////////////////////////////////////////
 const func = require("./aplanar.js");
+const abrirArchivoXls = require("./abrirArchivoXls.js");
 
 const express = require("express");
 const app = express();
@@ -11,6 +12,8 @@ const bcrypt = require("bcryptjs");
 const cp = require("cookie-parser");
 const jwt = require("jsonwebtoken");
 const credencialesAdministradores = require("./datosAdministradores.json");
+const multer = require("multer");
+const upload = multer({ dest: "uploads/" });
 //////////////////////////////////////////////////////////////
 // Midleware de express
 //////////////////////////////////////////////////////////////
@@ -136,7 +139,7 @@ app.get("/crear-administradores", async (req, res) => {
     sesion.startTransaction();
     try {
         await Usuario.insertMany(credencialesAdministradores, { sesion });
-        
+
         await sesion.commitTransaction();
         res.status(200).json("Hecho").send();
     } catch (error) {
@@ -185,16 +188,25 @@ app.get("/obtener-productos", async (req, res) => {
     try {
         if (!estaAutorizado(req)) throw new Error("No estas autorizado.");
 
+        let { tipo, pagina, tamahoPagina } = req.query;
+        pagina++;
         let elementoProducto = [];
-        if (req.query.tipo === "Repuestos") {
-            elementoProducto = await Repuesto.find({});
-        } else if (req.query.tipo === "Motos") {
-            elementoProducto = await Moto.find({});
-        } else {
-            throw new Error("No existe este producto.");
-        }
+        if (tipo === "Repuestos") {
+            elementoProducto = await Repuesto.find({})
+                .limit(tamahoPagina * 1)
+                .skip((pagina - 1) * tamahoPagina)
+                .exec();
+            } else if (tipo === "Motos") {
+                elementoProducto = await Moto.find({})
+                .limit(tamahoPagina * 1)
+                .skip((pagina - 1) * tamahoPagina)
+                .exec();
+            } else {
+                throw new Error("No existe este producto.");
+            }
         res.status(200).json(elementoProducto).send();
     } catch (error) {
+        console.log(error)
         res.status(400).send();
     }
 });
@@ -273,36 +285,44 @@ app.post("/suspension-producto", async (req, res) => {
     }
 });
 
-app.post("/agregacion-masiva-producto", async (req, res) => {
-    let sesion = await mongoose.startSession();
-    sesion.startTransaction();
-    try {
-        if (!estaAutorizado(req)) throw new Error("No estás autorizado.");
+app.post(
+    "/agregacion-masiva-producto",
+    upload.single("archivo"),
+    async (req, res) => {
+        let sesion = await mongoose.startSession();
+        sesion.startTransaction();
+        try {
+            if (!estaAutorizado(req)) throw new Error("No estás autorizado.");
 
-        if (req.body["tipo"] === "Repuestos") {
-            await Repuesto.insertMany(req.body["datos"], { sesion });
-        } else if (req.body["tipo"] === "Motos") {
-            await Moto.insertMany(req.body["datos"], { sesion });
-        }
+            const datos = abrirArchivoXls.abrirArchivoXls(req.file.path);
+            //console.log(datos)
+            if (req.body["tipo"] === "Repuestos") {
+                await Repuesto.insertMany(datos, { sesion });
+            } else if (req.body["tipo"] === "Motos") {
+                await Moto.insertMany(datos, { sesion });
+            }
 
-        await sesion.commitTransaction();
-        res.status(200).json("Hecho").send();
-    } catch (error) {
-        await sesion.abortTransaction();
-        if (error instanceof mongoose.Error.ValidationError) {
-            // Error de existencia de campos invalidos o vacios
-            res.status(400).json("Error de validacion").send();
-        } else if ((error.code = 11000)) {
-            // existe algun producto que se esta cargando con codigo igual a otro
-            res.status(400).json("Codigo duplicado").send();
-        } else {
-            // otros errores
-            res.status(400).send("Otro error");
+            await sesion.commitTransaction();
+            res.status(200).json("Hecho").send();
+        } catch (error) {
+            await sesion.abortTransaction();
+            if (error instanceof mongoose.Error.ValidationError) {
+                // Error de existencia de campos invalidos o vacios
+                console.log(error)
+                res.status(400).json("Error de validacion").send();
+            } else if ((error.code = 11000)) {
+                // existe algun producto que se esta cargando con codigo igual a otro
+                res.status(400).json("Codigo duplicado").send();
+            } else {
+                // otros errores
+                console.log(error);
+                res.status(400).send("Otro error");
+            }
+        } finally {
+            await sesion.endSession();
         }
-    } finally {
-        await sesion.endSession();
     }
-});
+);
 
 app.post("/editar-producto", async (req, res) => {
     try {

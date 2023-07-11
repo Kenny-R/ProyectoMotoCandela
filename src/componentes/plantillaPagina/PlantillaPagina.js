@@ -1,5 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { Box, Grid, Typography, Button } from "@mui/material";
+import {
+    Box,
+    Grid,
+    Typography,
+    Button,
+    alertTitleClasses,
+} from "@mui/material";
 import Item from "../item/Item";
 import TablaPersonalizada from "../tablaPersonalizada/TablaPersonalizada";
 import { MdAdd } from "react-icons/md";
@@ -29,7 +35,11 @@ const PlantillaPagina = ({
     tipoProducto,
     obtenerProductos,
     cargando,
-    columnasAFiltrar
+    columnasAFiltrar,
+    pagina,
+    tamañoPagina,
+    setPagina,
+    setTamañoPagina,
 }) => {
     const [agregar, setAgregar] = useState(false);
     const [modalCargaMasiva, setModalCargaMasiva] = useState(false);
@@ -67,6 +77,8 @@ const PlantillaPagina = ({
                     campos={camposModal}
                     tipoProducto={tipoProducto}
                     obtenerProductos={obtenerProductos}
+                    pagina={pagina}
+                    tamañoPagina={tamañoPagina}
                 />
             )}
             {modalCargaMasiva && (
@@ -75,6 +87,8 @@ const PlantillaPagina = ({
                     setAbierto={setModalCargaMasiva}
                     tipoProducto={tipoProducto}
                     obtenerProductos={obtenerProductos}
+                    pagina={pagina}
+                    tamañoPagina={tamañoPagina}
                 />
             )}
             <Box
@@ -153,6 +167,11 @@ const PlantillaPagina = ({
                                         <TablaPersonalizada
                                             filas={filasFiltradas}
                                             columnas={columnas}
+                                            pagina={pagina}
+                                            tamañoPagina={tamañoPagina}
+                                            setPagina={setPagina}
+                                            setTamañoPagina={setTamañoPagina}
+                                            obtenerProductos={obtenerProductos}
                                         />
                                     )}
                                 </Grid>

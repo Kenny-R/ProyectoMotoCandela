@@ -22,7 +22,7 @@ function crearDatos(nombre, modelo, categoria, acciones) {
     return {
         Nombre: nombre,
         Modelo: modelo,
-        "Categoría": categoria,
+        Categoría: categoria,
         Acciones: acciones,
     };
 }
@@ -35,14 +35,20 @@ const columnas = ["Nombre", "Modelo", "Categoría", "Acciones"];
 const Motos = () => {
     const [datos, setDatos] = useState([]);
     const [cargando, setCargando] = useState(true);
+    const [pagina, setPagina] = useState(0);
+    const [tamañoPagina, setTamañoPagina] = useState(5);
 
     /**
      * Función asincrónica que obtiene las motos de la base de datos.
      */
-    const obtenerMotos = async () => {
+    const obtenerMotos = async (pagina = 0, tamañoPagina = 5) => {
         try {
             setCargando(true);
-            const respuesta = await peticionObtenerProductos("Motos");
+            const respuesta = await peticionObtenerProductos(
+                "Motos",
+                pagina,
+                tamañoPagina
+            );
 
             if (!respuesta.ok) {
                 throw new Error(
@@ -55,7 +61,7 @@ const Motos = () => {
                 return crearDatos(
                     moto["Nombre"],
                     moto["Modelo"],
-                    moto[ "Categoría"],
+                    moto["Categoría"],
                     <Acciones
                         motos={true}
                         producto={moto}
@@ -64,6 +70,8 @@ const Motos = () => {
                             obtenerClases(CamposMotos),
                             moto
                         )}
+                        pagina={pagina}
+                        tamañoPagina={tamañoPagina}
                     />
                 );
             });
@@ -90,6 +98,10 @@ const Motos = () => {
                 obtenerProductos={obtenerMotos}
                 cargando={cargando}
                 columnasAFiltrar={[columnas[0], columnas[1], columnas[2]]}
+                pagina={pagina}
+                tamañoPagina={tamañoPagina}
+                setPagina={setPagina}
+                setTamañoPagina={setTamañoPagina}
             />
         </>
     );

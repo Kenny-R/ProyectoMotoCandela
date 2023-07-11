@@ -20,6 +20,8 @@ const Acciones = ({
     producto,
     obtenerProductos,
     productoClasificado,
+    pagina,
+    tamañoPagina,
 }) => {
     const { popAlert } = useGlobalAlert();
     const [suspender, setSuspender] = useState(producto["Suspendido"]);
@@ -88,7 +90,9 @@ const Acciones = ({
                     crear={false}
                     campos={productoClasificado}
                     tipoProducto={motos ? "Motos" : "Repuestos"}
-                    obtenerProductos = {obtenerProductos}
+                    obtenerProductos={obtenerProductos}
+                    pagina = {pagina}
+                    tamañoPagina = {tamañoPagina}
                 />
             )}
             {eliminar && (
@@ -98,6 +102,8 @@ const Acciones = ({
                     motos={motos}
                     producto={producto}
                     obtenerProductos={obtenerProductos}
+                    pagina = {pagina}
+                    tamañoPagina = {tamañoPagina}
                 />
             )}
             <Grid container columns={3} spacing={1}>

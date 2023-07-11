@@ -183,6 +183,8 @@ const PlantillaModal = ({
   campos,
   tipoProducto,
   obtenerProductos,
+  pagina,
+  tamañoPagina
 }) => {
   const [estadoForm, setEstadoForm] = useState(campos);
   const [pasoActivo, setPasoActivo] = useState(0);
@@ -250,7 +252,7 @@ const PlantillaModal = ({
         `Producto ${crear ? "agregado" : "modificado"} adecuadamente`,
         "success"
       );
-      obtenerProductos();
+      obtenerProductos(pagina, tamañoPagina);
       setAbierto(false);
 
     } catch (e) {

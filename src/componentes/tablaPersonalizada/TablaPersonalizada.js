@@ -20,30 +20,6 @@ import FilasTablaConEstilo from "../filasTablaConEstilo/FilasTablaConEstilo";
  * @returns {JSX.Element} Componente JSX de tabla personalizada.
  */
 const TablaPersonalizada = (props) => {
-    const [pagina, setPagina] = useState(0);
-    const [filasPorPagina, setFilasPorPagina] = useState(5);
-
-    useEffect(() => {
-        setPagina(0);
-    }, [props.filas]);
-
-    /**
-     * Obtiene las filas visibles según la página y filas por página.
-     *
-     * @param {array} filas - Filas de datos.
-     * @returns {array} Filas visibles.
-     */
-    const obtenerFilasVisibles = useCallback(
-        (filas) => {
-            if (filas == null) return null;
-            const empezarIndice = pagina * filasPorPagina;
-            const terminarIndice = empezarIndice + filasPorPagina;
-            return filas.slice(empezarIndice, terminarIndice);
-        },
-        [pagina, filasPorPagina]
-    );
-
-    const filasAMostrar = obtenerFilasVisibles(props.filas);
 
     /**
      * Maneja el cambio de filas por página.
@@ -51,8 +27,13 @@ const TablaPersonalizada = (props) => {
      * @param {object} event - Evento del cambio de filas por página.
      */
     const cambioFilasPorPagina = (event) => {
-        setFilasPorPagina(parseInt(event.target.value, 10));
-        setPagina(0);
+        props.setTamañoPagina(parseInt(event.target.value, 10));
+        props.obtenerProductos(props.pagina, parseInt(event.target.value, 10));
+    };
+
+    const cambioDePagina = (event, nuevaPagina) => {
+        props.setPagina(nuevaPagina);
+        props.obtenerProductos(nuevaPagina, props.tamañoPagina);
     };
 
     const keyframes = `
@@ -102,8 +83,8 @@ const TablaPersonalizada = (props) => {
                             </TableRow>
                         </TableHead>
                         <TableBody>
-                            {filasAMostrar &&
-                                filasAMostrar.map((fila) => (
+                            {props.filas &&
+                                props.filas.map((fila) => (
                                     <FilasTablaConEstilo>
                                         {Object.values(fila).map(
                                             (valor, indice) => (
@@ -125,18 +106,16 @@ const TablaPersonalizada = (props) => {
                     </Table>
                 </TableContainer>
                 <TablePagination
-                    rowsPerPageOptions={[5, 10, 25]}
                     component="div"
-                    count={props.filas.length}
-                    rowsPerPage={filasPorPagina}
-                    page={pagina}
-                    onPageChange={(event, newPage) => {
-                        setPagina(newPage);
-                    }}
+                    count={-1}
+                    page={props.pagina}
+                    rowsPerPage={props.tamañoPagina}
+                    rowsPerPageOptions={[5, 10, 25]}
+                    onPageChange={cambioDePagina}
                     onRowsPerPageChange={cambioFilasPorPagina}
                     labelRowsPerPage={"Filas por paginas"}
                     labelDisplayedRows={({ from, to, count }) =>
-                        `${from}-${to} de ${count}`
+                        `${from}-${to}`
                     }
                 />
             </div>

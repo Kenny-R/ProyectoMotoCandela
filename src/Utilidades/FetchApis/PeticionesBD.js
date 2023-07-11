@@ -26,8 +26,8 @@ export const peticionRegistrarProducto = async (body) => {
  * @param {string} tipoProducto - Tipo de producto para filtrar los resultados.
  * @returns {Promise<Response>} - Promesa que resuelve en la respuesta de la petición.
  */
-export const peticionObtenerProductos = async (tipoProducto) => {
-  return fetch(`http://localhost:5000/obtener-productos?tipo=${tipoProducto}`, {
+export const peticionObtenerProductos = async (tipoProducto, pagina = 0, tamañoPagina = 5) => {
+  return fetch(`http://localhost:5000/obtener-productos?tipo=${tipoProducto}&pagina=${pagina}&tamahoPagina=${tamañoPagina}`, {
     method: "GET",
     credentials: "include",
     headers: {
@@ -82,17 +82,15 @@ export const peticionSuspensionProducto = async (tipoProducto, datos) => {
  * @param {object} datos - Datos de los productos a agregar.
  * @returns {Promise<Response>} - Promesa que resuelve en la respuesta de la petición.
  */
-export const peticionAgregacionMasivaProducto = async (tipoProducto, datos) => {
+export const peticionAgregacionMasivaProducto =async (datos) => {
   return fetch("http://localhost:5000/agregacion-masiva-producto", {
     method: "POST",
     crossDomain: true,
     credentials: "include",
     headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
       "Access-Control-Allow-Origin": "http://localhost:5000",
     },
-    body: JSON.stringify({ tipo: tipoProducto, datos: datos }),
+    body: datos,
   });
 };
 

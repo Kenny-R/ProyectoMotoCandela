@@ -1,11 +1,10 @@
 import { useDropzone } from "react-dropzone";
 import { Button } from "@mui/material";
-import { read, utils } from "xlsx";
 import { FaUpload } from "react-icons/fa";
 import { useGlobalAlert } from "../../hooks/useGlobalAlert";
 
 import "./ComponenteArrastre.css";
-import { peticionAgregacionMasivaProducto } from "../../Utilidades/FetchApis/PeticionesBD";
+import { peticionAgregacionMasivaProducto} from "../../Utilidades/FetchApis/PeticionesBD";
 
 /**
  * Componente de arrastre de archivos.
@@ -21,6 +20,8 @@ function ComponenteArrastre({
   setAbierto,
   tipoProducto,
   obtenerProductos,
+  pagina,
+  tamañoPagina,
 }) {
   const { popAlert } = useGlobalAlert();
 
@@ -40,15 +41,11 @@ function ComponenteArrastre({
       }
 
       try {
-        const archivoBuffer = await archivo.arrayBuffer();
-        const libro = read(archivoBuffer);
-        const primeraHoja = libro.Sheets[libro.SheetNames[0]];
-        const datos = utils.sheet_to_json(primeraHoja);
+        const formData = new FormData();
+        formData.append("tipo", tipoProducto);
+        formData.append("archivo", archivo);
 
-        const respuesta = await peticionAgregacionMasivaProducto(
-          tipoProducto,
-          datos
-        );
+        const respuesta = await peticionAgregacionMasivaProducto(formData);
 
         const contenido = await respuesta.json();
         if (contenido === "Codigo duplicado") {
@@ -73,7 +70,7 @@ function ComponenteArrastre({
         }
         
         popAlert("Se cargaron todos los datos satisfactoriamente.", "success");
-        obtenerProductos();
+        obtenerProductos(pagina, tamañoPagina);
         setAbierto(false);
 
 

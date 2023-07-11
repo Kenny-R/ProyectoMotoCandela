@@ -21,6 +21,8 @@ const ModalCargaMasiva = ({
   setAbierto,
   tipoProducto,
   obtenerProductos,
+  pagina,
+  tamañoPagina,
 }) => {
   return (
     <Dialog open={abierto} onClose={() => setAbierto(false)}>
@@ -31,6 +33,8 @@ const ModalCargaMasiva = ({
           setAbierto={setAbierto}
           tipoProducto={tipoProducto}
           obtenerProductos={obtenerProductos}
+          pagina = {pagina}
+          tamañoPagina = {tamañoPagina}
         />
       </DialogContent>
       <DialogActions>
