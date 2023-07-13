@@ -14,6 +14,7 @@ const jwt = require("jsonwebtoken");
 const credencialesAdministradores = require("./datosAdministradores.json");
 const multer = require("multer");
 const upload = multer({ dest: "uploads/" });
+require("dotenv").config();
 //////////////////////////////////////////////////////////////
 // Midleware de express
 //////////////////////////////////////////////////////////////
@@ -28,8 +29,7 @@ app.use(cp());
 // conexion con la base de datos
 //////////////////////////////////////////////////////////////
 
-const mongoUrl =
-    "mongodb+srv://1910096:u2NnyYPZGiGi7bTO@prueba.stlmnyp.mongodb.net/";
+const mongoUrl = process.env.MONGO_URL;
 
 mongoose
     .connect(mongoUrl, {
@@ -64,7 +64,7 @@ const estaAutorizado = (req) => {
     try {
         const verificacionToken = jwt.verify(
             req.cookies.JWT,
-            "EmpanadaDeJamonYQueso"
+            process.env.SECRET
         );
         if (!verificacionToken) {
             return false;
@@ -74,7 +74,7 @@ const estaAutorizado = (req) => {
         return false;
     }
 
-    req.payload = jwt.decode(req.cookies.JWT, "EmpanadaDeJamonYQueso");
+    req.payload = jwt.decode(req.cookies.JWT, process.env.SECRET);
     return true;
 };
 
@@ -103,7 +103,7 @@ app.post("/iniciar-sesion", async (req, res) => {
         }
 
         const contenido = { Usuario: usuario.Usuario };
-        const token = jwt.sign(contenido, "EmpanadaDeJamonYQueso");
+        const token = jwt.sign(contenido, process.env.SECRET);
 
         res.cookie("JWT", token, {
             httpOnly: true,
