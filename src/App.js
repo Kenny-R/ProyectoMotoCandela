@@ -5,7 +5,6 @@ import NoEncontrado from "./paginas/comunes/NoEncontrado";
 import BarraLateral from "./componentes/barraLateral/BarraLateral";
 import Motos from "./paginas/motos/Motos";
 import Repuestos from "./paginas/repuestos/Repuestos";
-import "./App.css";
 import GlobalAlert from "./componentes/GlobalAlert";
 import RequiereAutorizacion from "./componentes/autorizacion/RequiereAutorizacion";
 

@@ -119,7 +119,6 @@ app.post("/iniciar-sesion", async (req, res) => {
 app.get("/cerrar-sesion", (req, res) => {
     res.clearCookie("JWT");
     res.send();
-    return;
 });
 
 app.get("/comprobar-sesion", async (req, res) => {
@@ -147,7 +146,7 @@ app.get("/crear-administradores", async (req, res) => {
         if (error instanceof mongoose.Error.ValidationError) {
             // Error de existencia de campos invalidos o vacios
             res.status(400).json("Error de validacion").send();
-        } else if ((error.code = 11000)) {
+        } else if (error.code == 11000) {
             // existe algun producto que se esta cargando con codigo igual a otro
             res.status(400).json("Ya existe al menos un administrador").send();
         } else {
@@ -175,7 +174,7 @@ app.post("/agregar-producto", async (req, res) => {
 
         res.status(200).json("producto agregado satisfactoriamente").send();
     } catch (error) {
-        if ((error.code = 11000)) {
+        if (error.code == 11000) {
             // existe algun producto con codigo igual a otro
             res.status(400).json("Codigo duplicado").send();
         } else {
@@ -196,17 +195,17 @@ app.get("/obtener-productos", async (req, res) => {
                 .limit(tamahoPagina * 1)
                 .skip((pagina - 1) * tamahoPagina)
                 .exec();
-            } else if (tipo === "Motos") {
-                elementoProducto = await Moto.find({})
+        } else if (tipo === "Motos") {
+            elementoProducto = await Moto.find({})
                 .limit(tamahoPagina * 1)
                 .skip((pagina - 1) * tamahoPagina)
                 .exec();
-            } else {
-                throw new Error("No existe este producto.");
-            }
-        res.status(200).json(elementoProducto).send();
+        } else {
+            throw new Error("No existe este producto.");
+        }
+        res.status(200).json(elementoProducto);
     } catch (error) {
-        console.log(error)
+        console.log(error);
         res.status(400).send();
     }
 });
@@ -308,9 +307,9 @@ app.post(
             await sesion.abortTransaction();
             if (error instanceof mongoose.Error.ValidationError) {
                 // Error de existencia de campos invalidos o vacios
-                console.log(error)
+                console.log(error);
                 res.status(400).json("Error de validacion").send();
-            } else if ((error.code = 11000)) {
+            } else if (error.code == 11000) {
                 // existe algun producto que se esta cargando con codigo igual a otro
                 res.status(400).json("Codigo duplicado").send();
             } else {

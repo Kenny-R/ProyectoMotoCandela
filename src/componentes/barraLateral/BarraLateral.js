@@ -83,7 +83,7 @@ const BarraLateral = ({ children }) => {
                         {menuItems.map((item, index) => (
                             <NavLink
                                 to={item.direccion}
-                                key={index}
+                                key={item.nombre}
                                 className="enlace"
                             >
                                 <ListItem>

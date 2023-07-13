@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from "react";
+import React from "react";
 import {
     Table,
     TableBody,
@@ -75,7 +75,7 @@ const TablaPersonalizada = (props) => {
                                                 ? "center"
                                                 : "left"
                                         }
-                                        key={indice}
+                                        key={columna}
                                     >
                                         {columna}
                                     </CeldaTablaConEstilo>
@@ -83,8 +83,7 @@ const TablaPersonalizada = (props) => {
                             </TableRow>
                         </TableHead>
                         <TableBody>
-                            {props.filas &&
-                                props.filas.map((fila) => (
+                            {props.filas?.map((fila) => (
                                     <FilasTablaConEstilo>
                                         {Object.values(fila).map(
                                             (valor, indice) => (
