@@ -11,9 +11,9 @@ Este proyecto esta siendo desarrollado por los estudiantes de la Universidad Sim
 
 Para el desarrollo del FrontEnd se utiliza el lenguaje de programacion JavaScript y la libreria React.
 
-Para el desarrollo del BackEnd se utiliza el lenguaje de programacion JavaScript y el frame work Express
+Para el desarrollo del BackEnd se utiliza el lenguaje de programacion JavaScript y el framework Express.
 
-Para la persistencias de datos se utiliza una conexion a una base de datos NoSQL de Mongo
+Para la persistencias de datos se utiliza una conexion a una base de datos NoSQL de Mongo.
 
 ## Iniciar el proyecto
 
@@ -30,13 +30,14 @@ Esta secuencia de pasos instalara todas las dependencias necesarias e iniciara e
 
 ### Iniciar el BackEnd
 
-Para poder iniciar el backend de manera satisfactoria, primero debemos ubicarnos en la carpeta backend
-usando el comando `cd./backend`, luego debe crear un archivo ".env" el cual debe tener las siguientes lineas:
+Para poder iniciar el backend, primero debemos ubicarnos en la carpeta backend
+usando el comando `cd./backend`, luego tenemos que crear un archivo ".env" el cual debe tener las siguientes lineas:
 
 MONGO_URL = [URI a la base de datos]
+
 SECRET = [Contraseña para el token JWT]
 
-Habiendo creado este archivo solo necesita ejecutar los siguientes comandos:
+Habiendo creado este archivo solo resta ejecutar los siguientes comandos:
 
 1. `npm install`
 2. `npx nodemon app`
