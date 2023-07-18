@@ -38,7 +38,7 @@ SECRET = [Contraseña para el token JWT]
 
 Habiendo creado este archivo solo necesita ejecutar los siguientes comandos:
 
-1. npm install
-2. npx nodemon app
+1. `npm install`
+2. `npx nodemon app`
 
 Esta secuencia de pasos instalara todas las dependencias necesarias, configurara la conexion a la base de datos, la codificacion de las cookies e iniciara el backEnd del proyecto en el puerto 5000.
