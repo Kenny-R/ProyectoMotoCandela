@@ -16,7 +16,7 @@ const esquema = {
 
 // Definición del modelo de datos del repuesto
 const RepuestoDetalles = new mongoose.Schema(esquema, {
-  collection: "Repuestos",
+  collection: "repuestos",
 });
 
 // Asociar el modelo de datos del repuesto con la colección "Repuestos" en la base de datos

@@ -34,6 +34,7 @@ const mongoUrl = process.env.MONGO_URL;
 mongoose
     .connect(mongoUrl, {
         useNewUrlParser: true,
+        dbName: process.env.MONGO_DB
     })
     .then(() => {
         console.log("Conectado al base de datos");
@@ -114,6 +115,8 @@ app.post("/iniciar-sesion", async (req, res) => {
             error: "ha ocurrido un error al procesar su solicitud",
         });
     }
+    res.status(200).send();
+
 });
 
 app.get("/cerrar-sesion", (req, res) => {
