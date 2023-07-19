@@ -35,6 +35,8 @@ usando el comando `cd./backend`, luego tenemos que crear un archivo ".env" el cu
 
 MONGO_URL = [URI a la base de datos]
 
+MONGO_DB = [Nombre de la base de datos]
+
 SECRET = [Contraseña para el token JWT]
 
 Habiendo creado este archivo solo resta ejecutar los siguientes comandos:
