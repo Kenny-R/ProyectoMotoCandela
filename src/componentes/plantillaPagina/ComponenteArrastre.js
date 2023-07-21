@@ -86,7 +86,7 @@ function ComponenteArrastre({
   return (
     <div className="upload-file">
       <div {...getRootProps()} className="drag-file-area">
-        <FaUpload className="icono" />
+        <FaUpload className="icono-subir-archivo" />
         <p>
           Arrastra y sube un archivo XLS, o haz click aquí para seleccionar el
           archivo.
