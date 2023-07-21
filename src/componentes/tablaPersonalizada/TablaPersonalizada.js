@@ -116,6 +116,9 @@ const TablaPersonalizada = (props) => {
                     labelDisplayedRows={({ from, to, count }) =>
                         `${from}-${to}`
                     }
+                    nextIconButtonProps={{
+                        disabled: props.filas.length < props.tamañoPagina,
+                    }}
                 />
             </div>
         </>
