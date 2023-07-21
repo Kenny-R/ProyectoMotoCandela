@@ -112,7 +112,7 @@ const TablaPersonalizada = (props) => {
                     rowsPerPageOptions={[5, 10, 25]}
                     onPageChange={cambioDePagina}
                     onRowsPerPageChange={cambioFilasPorPagina}
-                    labelRowsPerPage={"Filas por paginas"}
+                    labelRowsPerPage={"Filas por página"}
                     labelDisplayedRows={({ from, to, count }) =>
                         `${from}-${to}`
                     }

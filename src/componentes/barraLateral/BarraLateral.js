@@ -34,12 +34,12 @@ const BarraLateral = ({ children }) => {
         {
             direccion: "/motos",
             nombre: "Motos",
-            icono: <FaMotorcycle className="icono"/>,
+            icono: <FaMotorcycle className="icono" />,
         },
         {
             direccion: "/repuestos",
             nombre: "Repuestos",
-            icono: <SiCoronaengine className="icono"/>,
+            icono: <SiCoronaengine className="icono" />,
         },
     ];
 
@@ -56,7 +56,7 @@ const BarraLateral = ({ children }) => {
                 return;
             }
 
-            popAlert("Se ha cerrado la sesion", "success")
+            popAlert("Se ha cerrado la sesion", "success");
             navigate("/", {
                 state: { from: location },
                 replace: true,
@@ -102,7 +102,9 @@ const BarraLateral = ({ children }) => {
                         color="primary"
                         onClick={manejarCierreSesion}
                         startIcon={<BiLogOut />}
-                    />
+                    >
+                        Cerrar Sesión
+                    </Button>
                 </Box>
                 <Box className="contenido">{children}</Box>
             </Box>

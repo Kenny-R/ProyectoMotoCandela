@@ -45,14 +45,14 @@
   color: #000;
 }
 
-.enlace:active .icono {
-  color: #000;
-}
-
-
 .active { /* NO cambiar este nombre de clase*/
   background: #f17d3b;
   color: #000;
+}
+
+.active .icono {
+  color: #000;
+  transition: all 0.5s;
 }
 
 .textoEnlace {
