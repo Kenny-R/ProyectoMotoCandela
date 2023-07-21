@@ -1,5 +1,5 @@
 import React from "react";
-import logo from "./imagenes/logo.png";
+import logo from "./imagenes/logo.svg";
 import { NavLink, Link, useLocation, useNavigate } from "react-router-dom";
 import {
     Box,
@@ -34,12 +34,12 @@ const BarraLateral = ({ children }) => {
         {
             direccion: "/motos",
             nombre: "Motos",
-            icono: <FaMotorcycle className="icono" />,
+            icono: <FaMotorcycle className="icono"/>,
         },
         {
             direccion: "/repuestos",
             nombre: "Repuestos",
-            icono: <SiCoronaengine className="icono" />,
+            icono: <SiCoronaengine className="icono"/>,
         },
     ];
 
